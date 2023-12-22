@@ -59,27 +59,33 @@ redis-cli -p 5555
 
 ### redis-benchmark
 
-Use the Redis benchmark testing tool to test:
+使用 Redis benchmark 基准测试工具来进行测试:
+
 ```shell
 redis-benchmark -p 5555
 ```
-More parameters can be found on [Redis Benchmark](https://redis.io/docs/management/optimization/benchmarks/).
 
-## Use Musl libc
+更多详细的测试参数可以参考 [Redis Benchmark](https://redis.io/docs/management/optimization/benchmarks/).
 
-By default, RuxOS Redis Server is supported by ruxlibc, which is a customized standard C library. 
+## 使用 Musl libc
 
-By adding `MUSL=y` to the make command, redis server will be compiled, linked by standard Musl libc.
+默认情况下，RuxOS 的 redis-server 使用自定义的 C 应用程序 ruxlibc。
 
-## Use 9pfs
+通过添加 `MUSL=y` 到运行的命令中，就能借助 RuxOS 集成好的标准 musl libc来编译、链接。
 
-By default, RuxOS passes application arguments by `ARGS`, which can be inconvenient. RuxOS successfully integrate 9p protocol, and provide 9pfs to share directories and files between host and qemu. 
+## 使用 9pfs
 
-Run following command:
+默认情况下，RuxOS 通过命令行中的 `ARGS` 参数来向应用传递参数，这种方法可能会带来不变。现在 RuxOS 已经成功集成了 9pfs，用于 host 和 qemu 进行文件目录的共享，即可以通过应用自己的配置文件来传递参数。
+
+运行下面的命令:
+
 ```shell
 make A=apps/c/redis/ LOG=error NET=y V9P=y BLK=y V9P_PATH=apps/c/redis ARCH=aarch64 SMP=4 ARGS="./redis-server,/v9fs/redis.conf" run
 ```
-Parameter explanation:
-* `V9P`: Use `V9P=y` to enable virtio-9p on qemu.
-* `V9P_PATH`: `V9P_PATH` points to the shared directory, which contains the redis configuration file.
+
+参数解释:
+
+* `V9P`: 使用 `V9P=y` 来使能 qemu 的 virtio-9p 后端。
+
+* `V9P_PATH`: `V9P_PATH` 指向 host 上的用于共享的目录，里面包含了 Redis 的配置文件。
 
