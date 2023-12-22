@@ -1,0 +1,12 @@
+[book]
+authors = ["yanjuguang"]
+language = "zh-CN"
+multilingual = true
+description = "RuxOS 手册"
+src = "src"
+title = "RuxOS 手册"
+
+[output.html]
+default-theme = "light"
+git-repository-url = "https://github.com/syswonder/ruxos"
+git-repository-icon = "fa-github"
