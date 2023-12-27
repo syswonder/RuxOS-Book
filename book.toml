@@ -1,7 +1,7 @@
 [book]
 authors = ["yanjuguang"]
-language = "zh-CN"
-multilingual = true
+language = "zh"
+multilingual = false
 description = "RuxOS 手册"
 src = "src"
 title = "RuxOS 手册"
@@ -10,3 +10,4 @@ title = "RuxOS 手册"
 default-theme = "light"
 git-repository-url = "https://github.com/syswonder/ruxos"
 git-repository-icon = "fa-github"
+additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js"]
