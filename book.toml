@@ -11,3 +11,9 @@ default-theme = "light"
 git-repository-url = "https://github.com/syswonder/ruxos"
 git-repository-icon = "fa-github"
 additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js"]
+
+[[output.i18n.translations]]
+language = "en"
+translators = ["yanjuguang"]
+title = "RuxOS Book"
+src = "translations/en"
