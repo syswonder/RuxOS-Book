@@ -1,4 +1,4 @@
 
-# RuxOS Overview
+# Overview of RuxOS
 
-In this Chapter, RuxOS book will give you a brief introduction about RuxOS.
+This chapter provides a brief introduction to RuxOS.
