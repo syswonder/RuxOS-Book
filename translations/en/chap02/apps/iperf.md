@@ -2,6 +2,16 @@
 
 [iPerf3](https://github.com/esnet/iperf) is a tool used to test real-time bandwidth performance in networks.
 
+## Clone the Iperf Directory
+
+Run:
+
+```bash
+git clone https://github.com/syswonder/rux-iperf ./apps/c/iperf/
+```
+
+This command will clone the Iperf patch and other files into the `apps/c/iperf` directory.
+
 ## Build and Run
 
 Launch the iPerf3 server on RuxOS using the following command:

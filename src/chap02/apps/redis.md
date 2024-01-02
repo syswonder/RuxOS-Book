@@ -3,6 +3,16 @@
 
 RuxOS 支持在 Qemu 上运行 [Redis](https://github.com/redis/redis) 服务器端。
 
+## 拉取 Redis 目录
+
+运行：
+
+```bash
+git clone https://github.com/syswonder/rux-redis ./apps/c/redis/
+```
+
+该命令将拉取 Redis 相关的 makefile 以及 patch 文件到 `apps/c/redis` 目录下。
+
 ## 创建文件系统镜像
 
 在 RuxOS 根目录运行：
