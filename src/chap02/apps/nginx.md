@@ -2,6 +2,12 @@
 
 RuxOS 支持在 Qemu 上运行 [Nginx](https://www.nginx.com/)构建服务器。
 
+首先需要确保在RuxOS的`apps/c/nginx`的目录下存在nginx应用，如果没有可以在RuxOS根目录下运行下面的代码来下载nginx应用
+
+```shell
+git clone https://github.com/syswonder/rux-nginx.git ./apps/c/nginx
+```
+
 ## 创建文件系统镜像
 
 运行时，需要保证文件系统中存在以下文件：
@@ -33,7 +39,7 @@ rm -f -r syswonder-web
 
 ## 运行 Nginx
 
-在上面的步骤完成后，运行下面的命令，可以在5555端口上启动Nginx服务器。
+在上面的步骤完成后，在RuxOS的根目录下运行下面的命令，可以在5555端口上启动Nginx服务器。
 
 ```shell
 make A=apps/c/nginx/ LOG=info NET=y BLK=y ARCH=aarch64 SMP=4 run
