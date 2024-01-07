@@ -2,11 +2,15 @@
 
 RuxOS supports running  [Nginx](https://www.nginx.com/)build servers on Qemu.
 
-First, it's necessary to ensure that the Nginx application exists in the `apps/c/nginx` directory of RuxOS. If it's not there, you can download the Nginx application by running the following code in the root directory of RuxOS:
+## Clone the Nginx Directory
 
-```shell
+Run:
+
+```bash
 git clone https://github.com/syswonder/rux-nginx.git ./apps/c/nginx
 ```
+
+This command will clone the makefile and config files related to Nginx into the `apps/c/nginx` directory.
 
 ## Creating a File System Image
 

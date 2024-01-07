@@ -2,6 +2,16 @@
 
 RuxOS supports running the [Redis](https://github.com/redis/redis) server on Qemu.
 
+## Clone the Redis Directory
+
+Run:
+
+```bash
+git clone https://github.com/syswonder/rux-redis ./apps/c/redis/
+```
+
+This command will clone the makefile and patch files related to Redis into the `apps/c/redis` directory.
+
 ## Create File System Image
 
 Run the following command in the RuxOS root directory:
