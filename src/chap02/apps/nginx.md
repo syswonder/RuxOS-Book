@@ -1,6 +1,16 @@
 # Nginx
 
-RuxOS 支持在 Qemu 上运行 [Nginx](https://www.nginx.com/)构建服务器。
+RuxOS 支持在 Qemu 上运行 [Nginx](https://www.nginx.com/) 构建服务器。
+
+## 拉取 Nginx 目录
+
+执行：
+
+```bash
+git clone https://github.com/syswonder/rux-nginx.git ./apps/c/nginx
+```
+
+该命令将拉取Nginx的编译配置文件等文件放到 `apps/c/nginx` 目录下。
 
 ## 创建文件系统镜像
 
@@ -12,15 +22,15 @@ RuxOS 支持在 Qemu 上运行 [Nginx](https://www.nginx.com/)构建服务器。
 
 `/nginx/conf/mime.types`
 
-其中，`error.log`是日志文件（但是实际上没有用到），`nginx.conf`是Nginx配置文件，告诉Nginx如何运行以及一些运行的参数。`mime.type`是类型转化文件，告诉Nginx如何看待不同类型的文件。
+其中，`error.log` 是日志文件（但是实际上没有用到），`nginx.conf` 是 Nginx 配置文件，告诉 Nginx 如何运行以及一些运行的参数。`mime.type` 是类型转化文件，告诉Nginx如何看待不同类型的文件。
 
-如果RuxOS根目录下没有disk.img，在运行时会自动创建一个符合条件的img
+如果 RuxOS 根目录下没有 disk.img，在运行时会自动创建一个符合条件的 img。
 
-如果您想要重新生成镜像，可以运行`apps/c/nginx`目录下的`create_nginx_img.sh`
+如果您想要重新生成镜像，可以运行 `apps/c/nginx` 目录下的 `create_nginx_img.sh`。
 
 ## 创建网页文件
 
-在默认设置下运行时，`apps/c/nginx`目录下需要有一个名为html的文件夹，用来装载Nginx服务器的网页。如果您不想使用自己的网页，可以运行如下的命令来添加html的文件：
+在默认设置下运行时，`apps/c/nginx` 目录下需要有一个名为 html 的文件夹，用来装载 Nginx 服务器的网页。如果您不想使用自己的网页，可以运行如下的命令来添加 html 的文件：
 
 ```shell
 git clone https://github.com/syswonder/syswonder-web.git
@@ -29,11 +39,11 @@ cp -r syswonder-web/docs/* apps/c/nginx/html
 rm -f -r syswonder-web
 ```
 
-网页文件也可以设置在其他路径上，详见下面关于nginx.conf以及9p的内容
+网页文件也可以设置在其他路径上，详见下面关于 nginx.conf 以及 9p 的内容
 
 ## 运行 Nginx
 
-在上面的步骤完成后，运行下面的命令，可以在5555端口上启动Nginx服务器。
+在上面的步骤完成后，在RuxOS的根目录下运行下面的命令，可以在5555端口上启动Nginx服务器。
 
 ```shell
 make A=apps/c/nginx/ LOG=info NET=y BLK=y ARCH=aarch64 SMP=4 run
@@ -79,25 +89,19 @@ make A=apps/c/nginx/ LOG=info NET=y BLK=y FEATURES=virtio-9p V9P=y V9P_PATH=./ap
 参数解释:
 
 * `V9P`: 使用 `V9P=y` 来使能 qemu 的 virtio-9p 后端。
-* `FEATURES=virtio-9p`：告诉RuxOS启用9p功能
+* `FEATURES=virtio-9p`：告诉 RuxOS 启用 9p 功能
 * `V9P_PATH`: `V9P_PATH` 指向 host 上的用于共享的目录，默认情况下这是网页文件的位置。
 
 ## nginx.conf
 
-您可以修改`apps/c/nginx`目录下的nginx.conf文件来对Nginx的配置进行修改，包括修改Nginx服务器功能、修改服务器参数、修改Nginx运行选项等。
+您可以修改`apps/c/nginx`目录下的 nginx.conf 文件来对 Nginx 的配置进行修改，包括修改 Nginx 服务器功能、修改服务器参数、修改 Nginx 运行选项等。
 
 注意：
 
-* 除http服务器之外的功能尚未验证
-  
-  
-  
-* 如果修改服务器参数（比如端口），请对qemu的相应设置（比如端口映射）做相应更改
+* 除 http 服务器之外的功能尚未验证
 
-  
+* 如果修改服务器参数（比如端口），请对 qemu 的相应设置（比如端口映射）做相应更改
 
-* 修改完nginx.conf后请将其复制到文件系统镜像中，您可以通过在`apps/c/nginx`目录下运行`./create_nginx_img.sh`来完成
+* 修改完 nginx.conf 后请将其复制到文件系统镜像中，您可以通过在 `apps/c/nginx` 目录下运行 `./create_nginx_img.sh` 来完成
 
-  
-
-* 使用9pfs时的nginx.conf会有所不同，其内容在`apps/c/nginx`目录下的nginx_9p.conf中，可以通过`./create_nginx_img.sh 9p`的命令来将其复制到文件系统镜像中
+* 使用 9pfs 时的 nginx.conf 会有所不同，其内容在 `apps/c/nginx` 目录下的 nginx_9p.conf 中，可以通过 `./create_nginx_img.sh 9p` 的命令来将其复制到文件系统镜像中
