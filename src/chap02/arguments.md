@@ -36,6 +36,8 @@ RuxOS 提供了看起繁杂但却灵活且明确的编译参数，来针对多�
 | QEMU_LOG | 使能 qemu 的日志，默认输出到 `qemu.log` 文件中，里面包含运行的汇编代码。 |
 | NET_DUMP | 网络包抓取，输出到根目录的 `netdump.pcap` 文件中。 |
 | NET_DEV | qemu 网络设备类型：user, tap。 |
+| START_PORT | qemu 开放的端口的起始端口号（默认是5555号端口）。 |
+| PORTS_NUM | qemu 开放的端口的数量（默认是5个）。 |
 
 **9P 参数**：
 
