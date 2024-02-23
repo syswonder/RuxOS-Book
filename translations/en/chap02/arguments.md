@@ -1,62 +1,116 @@
-
 # Compilation Parameter Explanation
 
-RuxOS provides a set of compilation parameters that may seem intricate but offer flexibility and clarity for building and running various types of applications.
+RuxOS provides a set of comprehensive but flexible and explicit compilation parameters to build and run various types of applications.
 
-**General Options:**
+## General Options
 
-| Option | Description |
+| General Options | |
 | --- | --- |
-| ARCH | Target architecture: x86_64, riscv64, aarch64. Default is x86_64. |
-| PLATFORM | Target platform defined in the `platforms` directory. This parameter can be user-defined or generated based on the `ARCH` parameter, containing platform-specific parameter definitions. |
-| SMP | Number of CPU cores. If greater than 1, it enables multi-core features. Default is 1. |
+| ARCH | Target architecture: x86_64, riscv64, aarch64. The default architecture is x86_64. |
+| PLATFORM | Target platform defined in the `platforms` directory. This parameter can be user-defined or generated based on the `ARCH` parameter. It contains platform-specific parameter definitions. |
+| SMP | Number of CPU cores. If this parameter is greater than 1, multi-core features will be enabled. The default value is 1. |
 | MODE | Mode related to `cargo build`, default is release. |
 | LOG | Log level: warn, error, info, debug, trace. Default is warn. |
 | V | Verbose level: (empty), 1, 2 |
-| ARGS | Command line arguments, comma-separated, no spaces, can be empty. Used to pass specific parameters to applications, i.e., `argc`, `argv`. |
-| ENVS | Environment variable parameters, comma-separated, no spaces, can be empty. |
+| ARGS | Command-line arguments, separated by commas without spaces, can be empty. Used to pass specific arguments to the application, i.e., `argc`, `argv`. |
+| ENVS | Environment variable parameters, separated by commas without spaces, can be empty. |
 
-**Application Options:**
+## Application Options
 
-| Option | Description |
+| App Options | |
 | --- | --- |
-| A/APP | Path to the application directory. Supports relative and absolute paths. Default points to `apps/c/helloworld.` |
-| FEATURES | Features of RuxOS modules. Used to enable additional features desired by the user without needing to appear in the specific application's `features.txt` file. |
+| A/APP | Path to the application directory. Supports both relative and absolute paths. Defaults to `apps/c/helloworld.`. |
+| FEATURES | Features of RuxOS modules. This parameter is used to enable additional features desired by the user on the command line without needing to appear in the specific application's `features.txt` file. |
 | APP_FEATURES | Additional features for Rust applications. |
 
-**Qemu Options:**
+## Qemu Options
 
-| Option | Description |
+| Qemu Options | |
 |---|---|
-| BLK | Enable qemu virtio-blk backend. Set if the application requires persistent data or passing configuration files through the file system. |
-| NET | Enable qemu virtio-net backend. Set if the application requires network usage. |
+| BLK | Enable qemu virtio-blk backend. Set this parameter if the application needs to persist data or pass configuration files through the file system. |
+| NET | Enable qemu virtio-net backend. Set this parameter if the application needs to use networking. |
 | GRAPHIC | Enable qemu virtio-gpu backend for graphical output. |
-| BUS | Select device bus type: mmio, pci. |
+| BUS | Choose device bus type: mmio, pci. |
 | DISK_IMG | Path to the file system disk image. Default is `disk.img` in the root directory. |
 | ACCEL | Enable x86 KVM hardware acceleration. |
-| QEMU_LOG | Enable qemu logs, default output to `qemu.log` file, containing executed assembly code. |
-| NET_DUMP | Network packet capture, output to `netdump.pcap` file in the root directory. |
+| QEMU_LOG | Enable qemu logging, default output to `qemu.log` file including executed assembly code. |
+| NET_DUMP | Capture network packets, output to `netdump.pcap` file in the root directory. |
 | NET_DEV | Qemu network device type: user, tap. |
+| START_PORT | Starting port number opened by qemu (default is port 5555). |
+| PORTS_NUM | Number of ports opened by qemu (default is 5). |
 
-**9P Options:**
+## 9P Options
 
-| Option | Description |
+| 9P Options | |
 |---|---|
-| V9P_PATH | File directory on the host for sharing. Default is the root directory. |
-| NET_9P_ADDR| Address and port for 9p netdev. Default is `127.0.0.1:564`. |
+| V9P_PATH | File directory for sharing on the host. Default is the root directory. |
+| NET_9P_ADDR | Address and port for 9p netdev. Default is `127.0.0.1:564`. |
 | ANAME_9P | Path for 9pfs. |
 | PROTOCOL_9P | 9p protocol type. |
 
-**Network Options**, default port is 5555:
+## Network Options (Default Port 5555)
 
-| Option | Description |
+| Network Options | |
 |---|---|
-| IP | RuxOS IPv4 address (qemu user netdev, default is 10.0.2.15). |
+| IP | Ruxos IPv4 address (qemu user netdev, default is 10.0.2.15). |
 | GW | Gateway IPv4 address (qemu user netdev, default is 10.0.2.2). |
 
-**Libc Options:**
+## Libc Options
 
-| Option | Description |
+| Libc Options | |
 |---|---|
 | MUSL | Use musl libc for compilation and linking. By default, RuxOS uses `ruxlibc`. Users can enable musl libc by setting `MUSL=y`. |
 
+# Commands
+
+RuxOS provides various run commands to meet different needs, including compilation, execution, and debugging. These commands should be run in the RuxOS root directory.
+
+## make build
+
+Compile the specified application, defaulting to the `helloworld` application, and generate a binary kernel file suitable for direct execution by qemu.
+
+## make run
+
+Run the specified application, including the `make build` process, and pass the generated binary kernel file to qemu. Qemu parameters are generated based on the [compilation parameters](#Compilation-Parameter-Explanation) declared by the user.
+
+## make disasm
+
+Disassemble the binary instructions executed and generate a file containing all assembly instructions executed during the run.
+
+## make debug
+
+Start GDB for debugging.
+
+## make disk_img
+
+Generate a FAT32 image file using `dd` and `mkfs` commands, and pass it to qemu as a disk file.
+
+When dealing with programs that require filesystems or block device storage, you need to provide qemu with a block device.
+
+## make clean_c
+
+Clean `libc.a` of `ruxlibc` and the `app-objs` declared by C applications. If the corresponding application's `axbuild.mk` also includes `clean_c`, it will be executed accordingly.
+
+## make clean_musl
+
+Clean the install directory and build directory generated by musl libc. After this command, musl libc-related applications will be recompiled when run.
+
+## make clean
+
+This command includes `make clean_c` and `make clean_musl`, and also cleans up elf files and bin files of applications, and executes `cargo clean`.
+
+## make clippy
+
+Perform code linting using clippy.
+
+## make fmt
+
+Format Rust code using `cargo fmt`.
+
+## make fmt_c
+
+Format C code according to standards.
+
+## make test
+
+Test the applications in the `apps/` directory by comparing their output with the corresponding `.out` files to determine whether they are correct.

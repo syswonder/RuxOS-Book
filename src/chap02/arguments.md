@@ -2,7 +2,7 @@
 
 RuxOS 提供了看起繁杂但却灵活且明确的编译参数，来针对多种类型的应用进行构建和运行。
 
-**通用参数** ：
+## 通用参数
 
 | General Options | |
 | --- | --- |
@@ -15,7 +15,7 @@ RuxOS 提供了看起繁杂但却灵活且明确的编译参数，来针对多�
 | ARGS | 命令行参数，使用逗号分隔，不允许空格，可以为空。用来给应用程序传递具体的参数，即 `argc`，`argv`。 |
 | ENVS | 环境变量参数，使用逗号分隔，不允许空格，可以为空。 |
 
-**应用参数** ：
+## 应用参数
 
 | App Options | |
 | --- | --- |
@@ -23,7 +23,7 @@ RuxOS 提供了看起繁杂但却灵活且明确的编译参数，来针对多�
 | FEATURES | RuxOS 模块的 feature。该参数用于在命令行开启用户想要的额外 feature，而不需要出现在具体应用的 `features.txt`文件中。 |
 | APP_FEATURES | rust 应用的额外 feature。 |
 
-**Qemu 参数**：
+## Qemu 参数
 
 | Qemu Options | |
 |---|---|
@@ -39,7 +39,7 @@ RuxOS 提供了看起繁杂但却灵活且明确的编译参数，来针对多�
 | START_PORT | qemu 开放的端口的起始端口号（默认是5555号端口）。 |
 | PORTS_NUM | qemu 开放的端口的数量（默认是5个）。 |
 
-**9P 参数**：
+## 9P 参数
 
 | 9P Options | |
 |---|---|
@@ -48,18 +48,72 @@ RuxOS 提供了看起繁杂但却灵活且明确的编译参数，来针对多�
 | ANAME_9P | 9pfs 的路径。 |
 | PROTOCOL_9P | 9p 协议类型。 |
 
-**网络参数**，默认端口号为 5555：
+## 网络参数（默认端口号 5555）
 
 | Network Options | |
 |---|---|
 | IP | Ruxos IPv4 地址（qemu user netdev，默认是 10.0.2.15）。 |
 | GW | 网关 IPv4 地址（qemu user netdev，默认是 10.0.2.2）。 |
 
-**Libc 参数**：
+## Libc 参数
 
 | Libc Options | |
 |---|---|
 | MUSL | 使用 musl libc 来进行编译、链接。默认情况下 RuxOS 用的是 `ruxlibc` 。用户可以通过设置 `MUSL=y` 来使能 musl libc。 |
 
+# 运行命令
+
+RuxOS 提供了多种运行命令，以满足不同的需求，包含编译、运行、调试等。这些命令需要在 RuxOS 根目录下运行。
+
+## make build
+
+编译指定的应用，默认为 `helloworld` 应用，生成可供 qemu 直接运行的二进制内核文件。
+
+## make run
+
+运行指定的应用，包含了 `make build` 的过程，将生成的二进制内核文件传给 qemu，qemu 的参数根据用户声明的[编译参数](#编译参数说明)进行生成。
+
+## make disasm
+
+将运行的二进制指令反汇编，生成文件包含了运行过程中的所有汇编指令。
+
+## make debug
+
+启动 GDB 进行调试。
+
+## make disk_img
+
+借助 `dd`，`mkfs` 命令生成一个 fat32 镜像文件，传给 qemu 作为磁盘文件。
+
+当涉及到需要使用文件系统、块设备存储的程序时，需要提供给 qemu 一个块设备。
+
+## make clean_c
+
+清除 `ruxlibc` 的 `libc.a` 以及 C 应用程序声明的 `app-objs`，如果对应的应用程序的 `axbuild.mk` 也写了 `clean_c` 
+也会相应的运行。
+
+## make clean_musl
+
+清除 musl libc 生成的 install 目录和 build 目录，该命令之后，运行 musl libc 相关的应用时会重新编译 musl libc。
+
+## make clean
+
+该命令包含 `make clean_c`，`make clean_musl`，同时会清除应用程序的 elf 文件和 bin 文件，并执行 `cargo clean`。
+
+## make clippy
+
+借助 clippy 做代码规范检查。
+
+## make fmt
+
+借助 `cargo fmt` 对调整 Rust 代码格式。
+
+## make fmt_c
+
+对 C 代码格式进行规范。
+
+## make test
+
+对 `apps/` 目录下的应用进行测试，并通过比对输出结果与相应的 `.out` 文件来判断是否正确。
 
 
