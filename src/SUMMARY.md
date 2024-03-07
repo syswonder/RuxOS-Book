@@ -24,6 +24,8 @@
 
         - [Nginx](./chap02/apps/nginx.md)
 
+        - [Wamr](./chap02/apps/wamr.md)
+
 - [自定义应用](./chap03/your_app.md)
 
 - [使用 ruxgo 构建](./chap04/ruxgo.md)
