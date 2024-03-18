@@ -56,17 +56,11 @@ make A=apps/c/wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=apps/
 
 若需要将参数传递给iwasm，如指定给iwasm的环境变量，可将其放在iwasm之后，/main.wasm之前，如`iwasm,--env="xxx=yyy",/main.wasm`。
 
-## WASI-NN
-
-如果需要在WAMR中使用NN（神经网络）支持，需要运行带`WASI_NN=1`参数的`make`命令：
-
-```shell
-make A=apps/c/wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=apps/c/wamr/rootfs WASI_NN=1 ARGS="iwasm,/main.wasm" run
-```
-
 ## 3. 运行自己的wasm应用
 
-wasm具有跨平台的特性，所以在RuxOS上可以直接运行在本机上编译好的wasm应用。想要运行自己的wasm应用，只需要在本地编译好wasm应用，将wasm文件放到rux-wamr的rootfs目录下，然后修改上述命令的`ARGS`参数即可运行。
+wasm具有跨平台的特性，所以在RuxOS上可以直接运行在本机上编译好的wasm应用。
+
+想要运行自己的wasm应用，只需要在本地编译好wasm应用，将wasm文件放到rux-wamr的rootfs目录下，然后修改上述命令的`ARGS`参数即可运行。
 
 这里使用[WASI-SDK](https://github.com/WebAssembly/wasi-sdk)编译wasm应用。首先下载WASI-SDK并解压到合适的目录，然后运行类似下面的命令编译wasm应用：
 
@@ -76,9 +70,18 @@ $WASI_SDK_DIR/bin/clang -O3 -o main.wasm main.c
 
 编译完成后将main.wasm文件放到rux-wamr的rootfs目录下即可。
 
+## 4. WASI-NN
+
+如果需要在WAMR中使用NN（神经网络）支持，需要运行带`WASI_NN=1`参数的`make`命令：
+
+```shell
+make A=apps/c/wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=apps/c/wamr/rootfs WASI_NN=1 ARGS="iwasm,/main.wasm" run
+```
+
 例如，如果你想自己编译支持神经网络的测试用例，可以在`apps/c/wamr/wasm-micro-runtime-{version}/core/iwasm/libraries/wasi-nn/test/`目录中使用如下命令：
 
 ```bash
+# 假设你已经将wasi-sdk安装在/opt/wasi-sdk目录下
 /opt/wasi-sdk/bin/clang \
     -Wl,--allow-undefined \
     -Wl,--strip-all,--no-entry \
@@ -93,4 +96,9 @@ $WASI_SDK_DIR/bin/clang -O3 -o main.wasm main.c
 ```bash
 cp test_tensorflow.wasm ../../../../../../rootfs/
 ```
+
+运行`test_tensorflow_quantized.wasm`文件的方法也是一样的。
+
+`*.tflite`模型文件由`rootfs/models/*.py`生成，可以在本地使用python生成自定义的`*.tflite`模型文件。
+
 运行上述`make`命令体验在RuxOS上运行神经网络模型。
