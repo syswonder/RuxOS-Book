@@ -102,3 +102,9 @@ cp test_tensorflow.wasm ../../../../../../rootfs/
 `*.tflite`模型文件由`rootfs/models/*.py`生成，可以在本地使用python生成自定义的`*.tflite`模型文件。
 
 运行上述`make`命令体验在RuxOS上运行神经网络模型。
+
+如果你想在Rust中构建支持wasi_nn的wasm，需要在make命令中添加`WAMR_BUILD_WASI_EPHEMERAL_NN=1`参数。因为Rust中wasi_nn的模块名是`wasi_ephemeral_nn`，而不是`wasi_nn`：
+
+```bash
+make A=apps/c/wamr ARCH=aarch64 LOG=info run MUSL=y NET=y V9P=y V9P_PATH=apps/c/wamr/rootfs ARGS="iwasm,--env="TARGET=cpu",--dir=.,/built_from_rust.wasm" WASI_NN=1 WAMR_BUILD_WASI_EPHEMERAL_NN=1
+```
