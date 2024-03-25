@@ -93,6 +93,8 @@ make A=apps/c/wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=apps/
     test_tensorflow.c utils.c
 ```
 
+如果你想将`c++`文件编译成`wasm`文件，你需要在上述命令中加上`-lc++`和`-lc++abi`参数。
+
 然后复制`test_tensorflow.wasm`到`apps/c/wamr/rootfs`目录下即可：
 
 ```bash
