@@ -10,6 +10,8 @@
 
 - [运行现有应用](./chap02/getstarted.md)
 
+    - [环境配置说明](./chap02/env-config.md)
+
     - [编译参数说明](./chap02/arguments.md)
 
     - [现有应用](./chap02/apps/root.md)
@@ -45,7 +47,7 @@
         - [9pfs](./chap06/modules/9pfs.md)
 
 - [用户库](./chap07/ulib/ulib.md)
-        
+
     - [ruxos-posix-api](./chap07/ulib/ruxos-posix-api.md)
 
     - [ruxlibc](./chap07/ulib/ruxlibc.md)
