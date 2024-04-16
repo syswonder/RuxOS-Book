@@ -12,6 +12,14 @@ git clone https://github.com/syswonder/rux-nginx.git ./apps/c/nginx
 
 该命令将拉取Nginx的编译配置文件等文件放到 `apps/c/nginx` 目录下。
 
+## 运行样例
+
+如果您只是想要测试nginx的可运行性，而不关心nginx本身运行的内容，可以通过下面的命令直接运行样例
+
+```
+bash ./apps/c/nginx/example_run.sh
+```
+
 ## 创建文件系统镜像
 
 运行时，需要保证文件系统中存在以下文件：
@@ -30,14 +38,7 @@ git clone https://github.com/syswonder/rux-nginx.git ./apps/c/nginx
 
 ## 创建网页文件
 
-在默认设置下运行时，`apps/c/nginx` 目录下需要有一个名为 html 的文件夹，用来装载 Nginx 服务器的网页。如果您不想使用自己的网页，可以运行如下的命令来添加 html 的文件：
-
-```shell
-git clone https://github.com/syswonder/syswonder-web.git
-mkdir -p apps/c/nginx/html
-cp -r syswonder-web/docs/* apps/c/nginx/html
-rm -f -r syswonder-web
-```
+在默认设置下运行时，`apps/c/nginx` 目录下需要有一个名为 html 的文件夹，用来装载 Nginx 服务器的网页。
 
 网页文件也可以设置在其他路径上，详见下面关于 nginx.conf 以及 9p 的内容
 
@@ -91,6 +92,17 @@ make A=apps/c/nginx/ LOG=info NET=y BLK=y FEATURES=virtio-9p V9P=y V9P_PATH=./ap
 * `V9P`: 使用 `V9P=y` 来使能 qemu 的 virtio-9p 后端。
 * `FEATURES=virtio-9p`：告诉 RuxOS 启用 9p 功能
 * `V9P_PATH`: `V9P_PATH` 指向 host 上的用于共享的目录，默认情况下这是网页文件的位置。
+
+## 使用HTTPS
+
+默认情况下，nginx用作http网络服务器，如果您想要使用https，请使用rux-nginx的with_ssl分支
+
+```
+rm -rf ./apps/c/nginx
+git clone https://github.com/syswonder/rux-nginx.git -b with_ssl ./apps/c/nginx
+```
+
+其他运行步骤不变
 
 ## nginx.conf
 

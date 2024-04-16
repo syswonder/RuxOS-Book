@@ -12,6 +12,15 @@ git clone https://github.com/syswonder/rux-nginx.git ./apps/c/nginx
 
 This command will clone the makefile and config files related to Nginx into the `apps/c/nginx` directory.
 
+## Running Example
+
+If you just want to test the runnability of nginx and are not concerned about the content it runs, you can directly execute the following command to run the example:
+
+```
+bashCopy code
+bash ./apps/c/nginx/example_run.sh
+```
+
 ## Creating a File System Image
 
 When running, it is necessary to ensure the following files exist in the file system:
@@ -28,18 +37,11 @@ If there is no disk.img in the root directory of RuxOS, an appropriate img will 
 
 If you want to regenerate the image, you can run the create_nginx_img.sh script in the apps/c/nginx directory.
 
-## Creating Web Page Files
+## Creating Webpage Files
 
-By default, when running, the `apps/c/nginx` directory needs to have a folder named html to load the web pages of the Nginx server. If you do not want to use your own web pages, you can run the following command to add files to the html folder:
+When running with default settings, a folder named `html` must be present in the `apps/c/nginx` directory to load the web pages for the Nginx server.
 
-```shell
-git clone https://github.com/syswonder/syswonder-web.git
-mkdir -p apps/c/nginx/html
-cp -r syswonder-web/docs/* apps/c/nginx/html
-rm -f -r syswonder-web
-```
-
-Web page files can also be set in other paths, see below for details about nginx.conf and 9p.
+The webpage files can also be set in other paths, see the details below regarding `nginx.conf` and `Using 9pfs`.
 
 ## Running Nginx
 
@@ -90,6 +92,17 @@ Parameter explanation:
 `V9P`: Use V9P=y to enable qemu's virtio-9p backend.
 `FEATURES=virtio-9p`: Tells RuxOS to enable the 9p feature.
 `V9P_PATH`: V9P_PATH points to the directory on the host that is shared, by default this is the location of the web page files.
+
+## Using HTTPS
+
+By default, nginx is used as an HTTP web server. If you want to use HTTPS, please use the `with_ssl` branch of rux-nginx:
+
+```
+bashCopy coderm -rf ./apps/c/nginx
+git clone https://github.com/syswonder/rux-nginx.git -b with_ssl ./apps/c/nginx
+```
+
+Other running steps remain unchanged.
 
 ## nginx.conf
 
