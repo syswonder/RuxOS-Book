@@ -27,6 +27,8 @@
         - [Nginx](./chap02/apps/nginx.md)
 
         - [Wamr](./chap02/apps/wamr.md)
+    
+    - [运行预编译应用](./chap02/ELF-loader.md)
 
 - [自定义应用](./chap03/your_app.md)
 
