@@ -1,4 +1,9 @@
 
+<p align="center">
+    <img src="figures/ruxos-logo0.svg" alt="RuxOS-logo" width="500"><br>
+</p>
+
+
 # 欢迎使用 RuxOS！
 
 该项目为 RuxOS 手册，面向应用开发者和内核开发者，包含以下内容：
