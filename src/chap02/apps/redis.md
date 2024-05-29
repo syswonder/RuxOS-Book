@@ -90,7 +90,7 @@ redis-benchmark -p 5555
 运行下面的命令:
 
 ```shell
-make A=apps/c/redis/ LOG=error NET=y V9P=y BLK=y V9P_PATH=apps/c/redis ARCH=aarch64 SMP=4 ARGS="./redis-server,/v9fs/redis.conf" run
+make A=apps/c/redis/ LOG=error NET=y V9P=y BLK=y FEATURES=virtio-9p V9P_PATH=apps/c/redis ARCH=aarch64 SMP=4 ARGS="./redis-server,/v9fs/redis.conf" run
 ```
 
 参数解释:

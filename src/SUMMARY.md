@@ -14,7 +14,7 @@
 
     - [编译参数说明](./chap02/arguments.md)
 
-    - [现有应用](./chap02/apps/root.md)
+    - [现有应用及编程语言支持](./chap02/apps/root.md)
 
         - [Hello World!](./chap02/apps/helloworld.md)
 
@@ -27,8 +27,10 @@
         - [Nginx](./chap02/apps/nginx.md)
 
         - [Wamr](./chap02/apps/wamr.md)
+
+        - [Perl](./chap02/apps/perl.md)
     
-    - [运行预编译应用](./chap02/ELF-loader.md)
+    - [动态加载应用二进制](./chap02/ELF-loader.md)
 
 - [自定义应用](./chap03/your_app.md)
 
