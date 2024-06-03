@@ -1,5 +1,5 @@
 
-# 运行预编译应用
+# 动态加载应用二进制
 
 ELF Loader: 使 RuxOS 能够运行未经修改的 Linux ELF 应用.
 - ELF 必须是 PIE

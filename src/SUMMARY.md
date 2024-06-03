@@ -64,4 +64,4 @@
 - [TODO]()
 
 ---
-[贡献](./Contributors.md)
+[贡献者](./Contributors.md)
