@@ -53,6 +53,7 @@ RuxOS 目前对如下应用完成了适配和验证：
 - [Wamr](../chap02/apps/wamr.md)。在 RuxOS 上运行 wasm 字节码解释器 WAMR，并借助 wasi-nn 神经网络后端运行简单的 tensorflow 测试。
 - [Iperf](../chap02/apps/iperf.md)。在 RuxOS 上运行标准 Iperf 测试。
 - [Sqlite](../chap02/apps/sqlite.md)。在 RuxOS 上运行数据库应用 Sqlite。
+- C/C++。基于 musl libc 完成对 C/C++ 程序的适配。
 
 ## 工具
 

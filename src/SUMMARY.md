@@ -12,7 +12,7 @@
 
     - [环境配置说明](./chap02/env-config.md)
 
-    - [编译参数说明](./chap02/arguments.md)
+    - [编译参数及常用命令说明](./chap02/arguments.md)
 
     - [现有应用及编程语言支持](./chap02/apps/root.md)
 
@@ -20,7 +20,7 @@
 
         - [Iperf3](./chap02/apps/iperf.md)
 
-        - [Sqlite](./chap02/apps/sqlite.md)
+        - [SQLite](./chap02/apps/sqlite.md)
 
         - [Redis](./chap02/apps/redis.md)
 

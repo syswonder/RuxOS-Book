@@ -2,7 +2,7 @@
 
 RuxOS 支持在 Qemu 上通过wasm运行时 [WAMR](https://github.com/bytecodealliance/wasm-micro-runtime)来运行wasm应用。
 
-## 1. WAMR简介
+## WAMR简介
 
 WAMR是一个轻量级的wasm运行时，支持在嵌入式设备上运行wasm应用。RuxOS提供了Hello World和2048小游戏的wasm应用作为示例，同时支持WASI-NN，具有运行神经网络模型的能力。
 
@@ -18,7 +18,7 @@ WAMR是一个轻量级的wasm运行时，支持在嵌入式设备上运行wasm�
 ├── wamr.patch
 ```
 
-## 2. 编译WAMR并运行示例
+## 编译WAMR并运行示例
 
 WAMR的编译依赖于cmake，所以在编译WAMR之前需要安装cmake。
 
@@ -50,13 +50,15 @@ make A=apps/c/wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=apps/
 
 输入wasd以控制，运行2048小游戏的界面如下：
 
-![2048](img/2048.png)
+<p align="center">
+    <img src="img/2048.png" alt="2048example" width="400"><br>
+</p>
 
 若需要将参数传递给wasm应用的main函数，可以在`/main.wasm`后面添加参数，如`iwasm,/main.wasm,--help`。
 
 若需要将参数传递给iwasm，如指定给iwasm的环境变量，可将其放在iwasm之后，/main.wasm之前，如`iwasm,--env="xxx=yyy",/main.wasm`。
 
-## 3. 运行自己的wasm应用
+## 运行自己的wasm应用
 
 wasm具有跨平台的特性，所以在RuxOS上可以直接运行在本机上编译好的wasm应用。
 
@@ -70,7 +72,7 @@ $WASI_SDK_DIR/bin/clang -O3 -o main.wasm main.c
 
 编译完成后将main.wasm文件放到rux-wamr的rootfs目录下即可。
 
-## 4. WASI-NN
+## WASI-NN
 
 如果需要在WAMR中使用NN（神经网络）支持，需要运行带`WASI_NN=1`参数的`make`命令：
 

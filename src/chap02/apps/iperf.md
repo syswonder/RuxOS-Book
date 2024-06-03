@@ -1,7 +1,7 @@
 
 # Iperf3
 
-[iPerf3](https://github.com/esnet/iperf) 是一个用来测试网络实时带宽性能的工具.
+[Iperf3](https://github.com/esnet/iperf) 是一个用来测试网络实时带宽性能的工具。
 
 ## 拉取 Iperf 目录
 
@@ -17,7 +17,7 @@ git clone https://github.com/syswonder/rux-iperf ./apps/c/iperf/
 
 通过下面的命令，在 RuxOS 上启动 iperf3 服务器：
 
-```bash
+```shell
 # in ruxos root directory
 make A=apps/c/iperf BLK=y NET=y ARCH=<arch> run
 ```

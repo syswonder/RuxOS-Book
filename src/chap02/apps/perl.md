@@ -18,7 +18,7 @@ make A=apps/c/rux-perl ARCH=aarch64 V9P=y NET=y MUSL=y SMP=1 run
 ```
 结果如下，会输出一行hello,perl!
 
-```bash
+```shell
 8888888b.                     .d88888b.   .d8888b.  
 888   Y88b                   d88P" "Y88b d88P  Y88b 
 888    888                   888     888 Y88b.      
@@ -76,7 +76,7 @@ ARGS = perl,your_perl.t
 ## perl的测试相关
 因为RuxOS 目前并不支持`fork()` ，所以我用了一些方法来运行官方测试程序
 如果你想运行perl的测试程序，首先将  `main.c` 中的一些注释给取消，这些是用于io重定向的 :
-```c
+```C
   // The following section of code is used only during Perl testing:
 
   // int fd = open("test_result.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);

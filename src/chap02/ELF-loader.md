@@ -1,21 +1,21 @@
 
 # 动态加载应用二进制
 
-ELF Loader: 使 RuxOS 能够运行未经修改的 Linux ELF 应用.
-- ELF 必须是 PIE
-- 支持静态和动态 PIE ELF, 前者使用 `-static-pie` 编译.
+ELF Loader: 使 RuxOS 能够运行未经修改的 Linux ELF 应用。
+- ELF 必须是 PIE。
+- 支持静态和动态 PIE ELF, 前者使用 `-static-pie` 编译。
 
-目前支持运行 Musl 编译的 x86_64 和 aarch64 Linux 的静态和动态 PIE 应用.
+目前支持运行 Musl 编译的 x86_64 和 aarch64 Linux 的静态和动态 PIE 应用。
 
-接下来以 aarch64 架构为例, 说明如何使用.
+接下来以 AArch64 架构为例, 说明如何使用。
 
 ## 快速开始
 
-提供了两种构建方式.
+提供了两种构建方式。
 
 ### 使用 RuxGo 构建
 
->  RuxGo 是 RuxOS 的配套工具.
+>  RuxGo 是 RuxOS 的配套工具。
 
 ```sh
 # 安装 RuxGo

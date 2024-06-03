@@ -23,7 +23,7 @@ make disk_img
 
 该命令会在根目录生成一个文件系统(fatfs)镜像 `disk.img`，传给 qemu 使用。
 
-## 运行 Redis-Server
+## 启动 Redis-Server
 
 运行下面的命令，会在 5555 端口上启动 Redis 服务器端。
 
@@ -47,7 +47,39 @@ make A=apps/c/redis/ LOG=error NET=y BLK=y ARCH=aarch64 SMP=4 ARGS="./redis-serv
 
 * `ARGS`: `ARGS` 提供 redis-server 运行所需要的参数。这里表示将 redis-server 运行在 qemu 的 0.0.0.0:5555，且不对数据做周期性的持久化。
 
-通过运行上述命令，Redis 的服务器端在端口 5555 上启动。
+通过运行上述命令，Redis 的服务器端在端口 5555 上启动，启动示例如下：
+
+```shell
+8888888b.                     .d88888b.   .d8888b.  
+888   Y88b                   d88P" "Y88b d88P  Y88b 
+888    888                   888     888 Y88b.      
+888   d88P 888  888 888  888 888     888  "Y888b.   
+8888888P"  888  888 `Y8bd8P' 888     888     "Y88b. 
+888 T88b   888  888   X88K   888     888       "888 
+888  T88b  Y88b 888 .d8""8b. Y88b. .d88P Y88b  d88P 
+888   T88b  "Y88888 888  888  "Y88888P"   "Y8888P" 
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+smp = 4
+build_mode = release
+log_level = error
+
+[1717404360.021450 axfs_ramfs::dir:55] AlreadyExists sys
+2:C 03 Jun 2024 08:46:00.077 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+2:C 03 Jun 2024 08:46:00.078 # Redis version=7.0.12, bits=64, commit=00000000, modified=1, pid=2, just started
+2:C 03 Jun 2024 08:46:00.079 # Configuration loaded
+2:M 03 Jun 2024 08:46:00.085 * Increased maximum number of open files to 10032 (it was originally set to 1024).
+2:M 03 Jun 2024 08:46:00.085 * monotonic clock: POSIX clock_gettime
+2:M 03 Jun 2024 08:46:00.104 * Running mode=standalone, port=5555.
+2:M 03 Jun 2024 08:46:00.104 # Server initialized
+2:M 03 Jun 2024 08:46:00.104 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condit.
+2:M 03 Jun 2024 08:46:00.110 # Failed to test the kernel for a bug that could lead to data corruption during background save. Your system could be affe.
+2:M 03 Jun 2024 08:46:00.117 * Ready to accept connections
+```
+
+当看到 `Ready to accept connections` 即可表示 Redis Server 成功启动。
 
 ## 如何连接、测试
 
@@ -98,4 +130,6 @@ make A=apps/c/redis/ LOG=error NET=y V9P=y BLK=y FEATURES=virtio-9p V9P_PATH=app
 * `V9P`: 使用 `V9P=y` 来使能 qemu 的 virtio-9p 后端。
 
 * `V9P_PATH`: `V9P_PATH` 指向 host 上的用于共享的目录，里面包含了 Redis 的配置文件。
+
+**关于切换架构、切换是否使用 musl libc、切换是否使用9pfs，可以参考 [Redis ReadMe](https://github.com/syswonder/rux-redis/blob/main/README.md) 给出的相关命令来灵活使用。**
 
