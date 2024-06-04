@@ -1,8 +1,9 @@
 
-# 动态加载应用二进制
+# 动态加载应用ELF文件
 
 ELF Loader: 使 RuxOS 能够运行未经修改的 Linux ELF 应用。
 - ELF 必须是 PIE。
+
 - 支持静态和动态 PIE ELF, 前者使用 `-static-pie` 编译。
 
 目前支持运行 Musl 编译的 x86_64 和 aarch64 Linux 的静态和动态 PIE 应用。
