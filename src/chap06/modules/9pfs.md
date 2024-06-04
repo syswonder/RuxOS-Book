@@ -10,7 +10,9 @@
 9P 事实上是一种用来进行文件读写的通信协议，它只是在会话层的。这就意味着在本质上9P与物理层、数据链路层等无关。9P通信协议的版本存在 `9P2000`、`9P2000.L` 和 `9P2000.u` 三种，其协议内容可以参考以下链接：
 
 * [9P2000的基本协议内容](https://ericvh.github.io/9p-rfc/rfc9p2000.html)
+
 * [9P2000.L拓展协议版本](https://github.com/chaos/diod/blob/master/protocol.md)
+
 * [9P2000.u拓展协议版本](http://ericvh.github.io/9p-rfc/rfc9p2000.u.html)
 
 ## virtio-9p

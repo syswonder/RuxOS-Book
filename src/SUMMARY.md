@@ -30,7 +30,7 @@
 
         - [Perl](./chap02/apps/perl.md)
     
-    - [动态加载应用二进制](./chap02/ELF-loader.md)
+    - [动态加载应用ELF文件](./chap02/ELF-loader.md)
 
 - [自定义应用](./chap03/your_app.md)
 

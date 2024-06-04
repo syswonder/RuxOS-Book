@@ -13,7 +13,9 @@ make A=apps/c/sqlite3/ LOG=error BLK=y run
 参数解释：
 
 - `A`：SQLite 的测试程序 main 函数所在目录路径。
+
 - `LOG`：运行的日志等级，不同的日志等级能够打印出不同的调试信息。
+
 - `BLK`：使用块设备进行数据持久化。
 
 

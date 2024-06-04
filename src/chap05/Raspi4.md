@@ -3,14 +3,20 @@
 
 所需要的硬件：
 - 树莓派以及SD卡
+
 - usb转串口模块
+
 - JTAG调试器（debug需要用到，只是运行则不需要），调试部分可参考上面提到的文章。
+
 #### 步骤一：烧录好SD卡
 给 sd 卡分一个 FAT32 的 boot 区，然后放入启动所需要的文件:
 
 - 下载以下三个文件：`bcm2711-rpi-4-b.dtb`，`start4.elf`，`fixup4.dat`。下载地址：[https://github.com/raspberrypi/firmware/tree/master/boot](https://github.com/raspberrypi/firmware/tree/master/boot)
+
 - 基本启动镜像`kernel8.img`。首先clone `rust-raspberrypi-OS-tutorials`（ [https://github.com/rust-embedded/rust-raspberrypi-OS-tutorials](https://github.com/rust-embedded/rust-raspberrypi-OS-tutorials)）到本地，然后进入`06_uart_chainloader`文件夹，运行`make BSP=rpi4` 即可在文件夹内生成一个`kernel8.img`。
+
 - 配置文件`config.txt`,该配置文件是用于正确设置启动选项，内容为：
+
 ```bash
 arm_64bit=1
 init_uart_clock=48000000
@@ -22,7 +28,9 @@ device_tree_address=0x03000000
 
 - 按照以下图片接线:
  ![serial-connect](img/serial-connect.jpg)
+
 - 进入Ruxos目录，运行命令：`make ARCH=aarch64 PLATFORM=aarch64-raspi4 chainboot`
+
 - 如果正常则终端会输出：
 ```bash
 Minipush 1.0
@@ -33,7 +41,7 @@ Minipush 1.0
 ```
 
 - 此时给树莓派上电，结果如下：
-```bash
+```shell
  __  __ _      _ _                 _
 |  \/  (_)_ _ (_) |   ___  __ _ __| |
 | |\/| | | ' \| | |__/ _ \/ _` / _` |
@@ -66,8 +74,10 @@ Hello, C app!
 #### 步骤三：运行Ruxos并使用SD卡驱动：
 
 - 进入Ruxos目录下，运行命令：`make ARCH=aarch64 PLATFORM=aarch64-raspi4 A=apps/fs/shell FEATURES=driver-bcm2835-sdhci chainboot`
+
 - 和步骤二类似，再看到开机提示后给树莓派上电，结果如下：
-```bash
+
+```shell
 Minipush 1.0
 
 [MP] ✅ Serial connected
@@ -129,7 +139,9 @@ ruxos:/$
 ```
 
 #### 可能出现的问题：
+
 ##### 串口设备异常：
+
 串口设备设置不正确时会一直卡在：
 ```bash
 Minipush 1.0
@@ -137,9 +149,13 @@ Minipush 1.0
 [MP] ⏳ Waiting for /dev/ttyUSB0
 ```
 - 在linux系统里可以通过`ls /dev`来显示所有外设，可以观察插上usb转ttl模块后，是否有名为ttyUSB0的设备（这是默认usb设备名称，也是后续我们写死在makefile里的名称）。如果没有该设备，可能是驱动没安装上。可以参考该文章来安装驱动 [https://blog.csdn.net/weixin_43790050/article/details/131362540](https://blog.csdn.net/weixin_43790050/article/details/131362540)
+
 - 如果想要验证串口设备是否正常，可以将TX和RX连接上，然后发送信息。如果串口设备是正常的，则每发送一条信息就会收到一条同样的信息
+
 ##### SD卡驱动的问题：
+
 Ruxos现在实现了解析设备树，但是与qemu不同，树莓派不会将dtb文件的指针放在某个寄存器上，于是只能通过相关设置，来固定dtb文件的位置。在`config.txt`中`device_tree_address=0x03000000`指定了dtb文件的物理地址。在`modules/ruxhal/src/platform/aarch64_raspi/mod.rs`中，修改`rust_entry`函数，即启动时默认从`0x03000000`地址来初始化设备树。
+
 ```rust
 pub(crate) unsafe extern "C" fn rust_entry(cpu_id: usize) {
     crate::mem::clear_bss();
@@ -155,8 +171,11 @@ pub(crate) unsafe extern "C" fn rust_entry(cpu_id: usize) {
     rust_main(cpu_id, 0x03000000);
 }
 ```
+
 ##### docker报错 var/run/docker.sock 权限不够:
+
 运行以下两行命令即可
+
 ```bash
 cd /
 sudo chmod 666 var/run/docker.sock
