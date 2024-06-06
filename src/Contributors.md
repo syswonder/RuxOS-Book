@@ -1,6 +1,8 @@
 
 # 贡献者
 
+感谢以下同学、单位的支持和贡献：
+
 |姓名|github ID|单位|
 |----|---------|----|
 |贾越凯|[@equation314](https://github.com/equation314)|清华大学(博士生)|
@@ -17,4 +19,15 @@
 |熊思民|[@minminm](https://github.com/minminm)|北京大学(硕士生)|
 |徐金阳|[@AuYang261](https://github.com/AuYang261)|北京理工大学(本科生), 北京大学(硕士生)|
 |周智|[@Sssssaltyfish](https://github.com/Sssssaltyfish)|清华大学(本科生)|
+
+## 如何贡献
+
+RuxOS 项目地址: [https://github.com/syswonder/ruxos](https://github.com/syswonder/ruxos) 
+
+邮件列表: [unikernel@syswonder.org](https://maillist.syswonder.org/mailman3/lists/unikernel.syswonder.org/)
+
+欢迎订阅邮件列表，关注我们的开发讨论例会。欢迎关注 RuxOS 仓库，对其中正在解决、开发的 [issue](https://github.com/syswonder/ruxos/issues) 和 [feature](https://github.com/syswonder/ruxos/milestones) 做出您的一份贡献。
+
+
+
 
