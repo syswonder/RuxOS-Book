@@ -58,6 +58,8 @@
 
         - [页表项及页表](./chap06/crates/pte-pt.md)
 
+        - [percpu类](./chap06/crates/percpu.md)
+
     - [功能模块](./chap06/modules/modules.md)
 
         - [配置及运行时初始化](./chap06/modules/config-and-initialization.md)

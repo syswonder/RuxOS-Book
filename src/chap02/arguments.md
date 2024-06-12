@@ -12,7 +12,7 @@ RuxOS 提供了灵活、明确的诸多编译参数，来针对多种类型的�
 | MODE | 与 `cargo build` 相关的模式，默认为 release。 |
 | **LOG** | 日志等级: warn, error, info, debug, trace。默认是 warn。 |
 | V | Verbose 等级: (empty), 1, 2 |
-| ARGS | 命令行参数，使用逗号分隔，不允许空格，可以为空。用来给应用程序传递具体的参数，即 `argc`，`argv`。 |
+| **ARGS** | 命令行参数，使用逗号分隔，不允许空格，可以为空。用来给应用程序传递具体的参数，即 `argc`，`argv`。 |
 | ENVS | 环境变量参数，使用逗号分隔，不允许空格，可以为空。 |
 
 ## 应用参数
