@@ -26,7 +26,7 @@
 
         - [Nginx](./chap02/apps/nginx.md)
 
-        - [Wamr](./chap02/apps/wamr.md)
+        - [WAMR](./chap02/apps/wamr.md)
 
         - [Perl](./chap02/apps/perl.md)
     

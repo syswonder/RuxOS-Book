@@ -4,7 +4,7 @@ RuxOS supports running wasm applications on Qemu through wasm runtime [WAMR](htt
 
 ## 1. Introduction to WAMR
 
-WAMR is a lightweight wasm runtime that supports running wasm applications on embedded devices. RuxOS provides wasm applications of Hello World and 2048 game as examples. And it also supports WASI-NN, which has the ability to run neural network models.
+WAMR is a lightweight wasm runtime that supports running wasm applications on embedded devices, now owned by the Bytecode Alliance and maintained by the community. RuxOS provides wasm applications of Hello World and 2048 game as examples. And it also supports WASI-NN, which has the ability to run neural network models.
 
 Clone [rux-wamr](https://github.com/syswonder/rux-wamr) to the apps/c/wamr directory of the RuxOS project, with the following structure:
 
@@ -18,6 +18,8 @@ Clone [rux-wamr](https://github.com/syswonder/rux-wamr) to the apps/c/wamr direc
 ├── wamr.patch
 ```
 
+The `main.wasm` and other wasm files under the `rootfs/` directory are compiled from `.c` files by the WASM compiler. `rootfs/` is a minimal RuxOS root file system, using 9pfs for RuxOS.
+
 ## 2. Compile WAMR and run the example
 
 The compilation of `WAMR` depends on `cmake`.
@@ -25,7 +27,7 @@ The compilation of `WAMR` depends on `cmake`.
 Run the following command in the RuxOS root directory, which will start the hello world wasm application.
 
 ```shell
-make A=apps/c/wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=apps/c/wamr/rootfs ARGS="iwasm,/main.wasm" run
+make A=apps/c/wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y V9P=y V9P_PATH=apps/c/wamr/rootfs ARGS="iwasm,/main.wasm" run
 ```
 
 Parameter explanation:
@@ -39,8 +41,6 @@ Parameter explanation:
 * `SMP`: `SMP` is used to enable the multi-core feature of RuxOS, followed by the number of cores started.
 
 * `MUSL`: This parameter indicates that musl libc is used as the c library at compile time.
-
-* `NET`: This parameter is used to enable qemu's virtio-net.
 
 * `V9P`: This parameter is used to enable qemu's virtio-9p.
 
@@ -77,7 +77,7 @@ Or you can put the `*.wasm` file from somewhere else into the rootfs.
 If you want to run WAMR with NN (Neural Network) support, you need to run `make` command with `WASI_NN=1`:
 
 ```bash
-make A=apps/c/wamr ARCH=aarch64 LOG=info run MUSL=y NET=y V9P=y V9P_PATH=apps/c/wamr/rootfs ARGS="iwasm,--env="TARGET=cpu",--dir=.,/test_tensorflow.wasm" WASI_NN=1
+make A=apps/c/wamr ARCH=aarch64 LOG=info run MUSL=y V9P=y V9P_PATH=apps/c/wamr/rootfs ARGS="iwasm,--env="TARGET=cpu",--dir=.,/test_tensorflow.wasm" WASI_NN=1
 ```
 
 For example, if you want to compile the demo with NN support by yourself, you can run the following command in `apps/c/wamr/wasm-micro-runtime-{version}/core/iwasm/libraries/wasi-nn/test/` directory:
@@ -110,5 +110,9 @@ Then run the `make` command above to enjoy the NN support in ruxos.
 If you want to run WASM built from rust with wasi_nn support, you will need to add `WAMR_BUILD_WASI_EPHEMERAL_NN=1` argument in the make command. Because the module name of wasi_nn in rust is `wasi_ephemeral_nn`, instead of `wasi_nn`:
 
 ```bash
-make A=apps/c/wamr ARCH=aarch64 LOG=info run MUSL=y NET=y V9P=y V9P_PATH=apps/c/wamr/rootfs ARGS="iwasm,--env="TARGET=cpu",--dir=.,/built_from_rust.wasm" WASI_NN=1 WAMR_BUILD_WASI_EPHEMERAL_NN=1
+make A=apps/c/wamr ARCH=aarch64 LOG=info run MUSL=y V9P=y V9P_PATH=apps/c/wamr/rootfs ARGS="iwasm,--env="TARGET=cpu",--dir=.,/built_from_rust.wasm" WASI_NN=1 WAMR_BUILD_WASI_EPHEMERAL_NN=1
 ```
+
+# Further
+
+You can also run other wasm files in ruxos using this application. Just compile the `.wasm` file and put it into the `rootfs/` directory. Then run it using the command above, only change the `ARGS` parameter, and you can enjoy the wasm application in ruxos.
