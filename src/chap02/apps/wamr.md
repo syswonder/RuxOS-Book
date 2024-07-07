@@ -4,7 +4,7 @@ RuxOS 支持在 Qemu 上通过wasm运行时 [WAMR](https://github.com/bytecodeal
 
 ## WAMR简介
 
-WAMR是一个轻量级的wasm运行时，支持在嵌入式设备上运行wasm应用。RuxOS提供了Hello World和2048小游戏的wasm应用作为示例，同时支持WASI-NN，具有运行神经网络模型的能力。
+WAMR是一个轻量级的wasm运行时，支持在嵌入式设备上运行wasm应用，现在归属于字节码联盟，由社区维护。RuxOS提供了Hello World和2048小游戏的wasm应用作为示例，同时支持WASI-NN，具有运行神经网络模型的能力。
 
 将[rux-wamr](https://github.com/syswonder/rux-wamr)克隆到RuxOS项目的apps/c目录下，有如下结构：
 
@@ -18,6 +18,8 @@ WAMR是一个轻量级的wasm运行时，支持在嵌入式设备上运行wasm�
 ├── wamr.patch
 ```
 
+`rootfs/`目录下的`main.wasm`和其他wasm文件是通过WASM编译器从`.c`文件编译而来的。`rootfs/`是一个最小的RuxOS根文件系统，使用9pfs供 RuxOS 使用。
+
 ## 编译WAMR并运行示例
 
 WAMR的编译依赖于cmake，所以在编译WAMR之前需要安装cmake。
@@ -25,7 +27,7 @@ WAMR的编译依赖于cmake，所以在编译WAMR之前需要安装cmake。
 在RuxOS根目录运行下面的命令，会启动hello world的wasm应用。
 
 ```shell
-make A=apps/c/rux-wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=apps/c/rux-wamr/rootfs ARGS="iwasm,/main.wasm" run
+make A=apps/c/rux-wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y V9P=y V9P_PATH=apps/c/rux-wamr/rootfs ARGS="iwasm,/main.wasm" run
 ```
 
 参数解释：
@@ -39,8 +41,6 @@ make A=apps/c/rux-wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=a
 * `SMP`: `SMP` 用于使能 RuxOS 的多核 feature，紧跟着的数字表示启动的核数。
 
 * `MUSL`: 该参数表示使用musl libc作为编译时的c库。
-
-* `NET`: 该参数用于使能 qemu 的 virtio-net。
 
 * `V9P`: 该参数用于使能 qemu 的 virtio-9p。
 
@@ -77,7 +77,7 @@ $WASI_SDK_DIR/bin/clang -O3 -o main.wasm main.c
 如果需要在WAMR中使用NN（神经网络）支持，需要运行带`WASI_NN=1`参数的`make`命令：
 
 ```shell
-make A=apps/c/wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=apps/c/wamr/rootfs WASI_NN=1 ARGS="iwasm,/main.wasm" run
+make A=apps/c/wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y V9P=y V9P_PATH=apps/c/wamr/rootfs WASI_NN=1 ARGS="iwasm,/main.wasm" run
 ```
 
 例如，如果你想自己编译支持神经网络的测试用例，可以在`apps/c/wamr/wasm-micro-runtime-{version}/core/iwasm/libraries/wasi-nn/test/`目录中使用如下命令：
@@ -110,5 +110,9 @@ cp test_tensorflow.wasm ../../../../../../rootfs/
 如果你想在Rust中构建支持wasi_nn的wasm，需要在make命令中添加`WAMR_BUILD_WASI_EPHEMERAL_NN=1`参数。因为Rust中wasi_nn的模块名是`wasi_ephemeral_nn`，而不是`wasi_nn`：
 
 ```bash
-make A=apps/c/wamr ARCH=aarch64 LOG=info run MUSL=y NET=y V9P=y V9P_PATH=apps/c/wamr/rootfs ARGS="iwasm,--env="TARGET=cpu",--dir=.,/built_from_rust.wasm" WASI_NN=1 WAMR_BUILD_WASI_EPHEMERAL_NN=1
+make A=apps/c/wamr ARCH=aarch64 LOG=info run MUSL=y V9P=y V9P_PATH=apps/c/wamr/rootfs ARGS="iwasm,--env="TARGET=cpu",--dir=.,/built_from_rust.wasm" WASI_NN=1 WAMR_BUILD_WASI_EPHEMERAL_NN=1
 ```
+
+# 更多
+
+你也可以使用这个应用在ruxos上运行其他wasm文件。只需要编译`.wasm`文件并将其放入`rootfs/`目录中。然后使用上面的命令运行它，只需更改`ARGS`参数，就可以在ruxos中享受wasm应用。
