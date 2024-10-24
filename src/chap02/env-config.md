@@ -10,7 +10,7 @@
 通过以下两条命令判断是否安装好 Rust 环境与 cargo 工具：
 
 ```bash
-rustv --version
+rustc --version
 cargo --version
 ```
 
