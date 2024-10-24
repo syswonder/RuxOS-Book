@@ -6,7 +6,7 @@ RuxOS supports running wasm applications on Qemu through wasm runtime [WAMR](htt
 
 WAMR is a lightweight wasm runtime that supports running wasm applications on embedded devices. RuxOS provides wasm applications of Hello World and 2048 game as examples. And it also supports WASI-NN, which has the ability to run neural network models.
 
-Clone [rux-wamr](https://github.com/syswonder/rux-wamr) to the apps/c directory of the RuxOS project, with the following structure:
+Clone [rux-wamr](https://github.com/syswonder/rux-wamr) to the apps/c/wamr directory of the RuxOS project, with the following structure:
 
 ```txt
 ├── axbuild.mk
@@ -25,7 +25,7 @@ The compilation of `WAMR` depends on `cmake`.
 Run the following command in the RuxOS root directory, which will start the hello world wasm application.
 
 ```shell
-make A=apps/c/rux-wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=apps/c/rux-wamr/rootfs ARGS="iwasm,/main.wasm" run
+make A=apps/c/wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=apps/c/wamr/rootfs ARGS="iwasm,/main.wasm" run
 ```
 
 Parameter explanation:

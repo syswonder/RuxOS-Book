@@ -6,7 +6,7 @@ RuxOS 支持在 Qemu 上通过wasm运行时 [WAMR](https://github.com/bytecodeal
 
 WAMR是一个轻量级的wasm运行时，支持在嵌入式设备上运行wasm应用。RuxOS提供了Hello World和2048小游戏的wasm应用作为示例，同时支持WASI-NN，具有运行神经网络模型的能力。
 
-将[rux-wamr](https://github.com/syswonder/rux-wamr)克隆到RuxOS项目的apps/c目录下，有如下结构：
+将[rux-wamr](https://github.com/syswonder/rux-wamr)克隆到RuxOS项目的apps/c/wamr目录下，有如下结构：
 
 ```txt
 ├── axbuild.mk
@@ -25,7 +25,7 @@ WAMR的编译依赖于cmake，所以在编译WAMR之前需要安装cmake。
 在RuxOS根目录运行下面的命令，会启动hello world的wasm应用。
 
 ```shell
-make A=apps/c/rux-wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=apps/c/rux-wamr/rootfs ARGS="iwasm,/main.wasm" run
+make A=apps/c/wamr ARCH=aarch64 LOG=info SMP=4 MUSL=y NET=y V9P=y V9P_PATH=apps/c/wamr/rootfs ARGS="iwasm,/main.wasm" run
 ```
 
 参数解释：
