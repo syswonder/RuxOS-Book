@@ -1,0 +1,375 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>页表项及页表 - RuxOS 手册</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="RuxOS 手册">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">RuxOS 手册</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/syswonder/ruxos" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="页表项及页表"><a class="header" href="#页表项及页表">页表项及页表</a></h1>
+<p>RuxOS 提供了 x86_64、AArch64、Risc-V64 三种架构的页表项、页表及相关方法的定义和实现。</p>
+<h3 id="页表项-page-table-entry"><a class="header" href="#页表项-page-table-entry">页表项 page table entry</a></h3>
+<p>页表项组件定义了页表项的基本方法：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// A generic page table entry.
+///
+/// All architecture-specific page table entry types implement this trait.
+pub trait GenericPTE: Debug + Clone + Copy + Sync + Send + Sized {
+    /// Creates a page table entry point to a terminate page or block.
+    fn new_page(paddr: PhysAddr, flags: MappingFlags, is_huge: bool) -&gt; Self;
+    /// Creates a page table entry point to a next level page table.
+    fn new_table(paddr: PhysAddr) -&gt; Self;
+
+    /// Returns the physical address mapped by this entry.
+    fn paddr(&amp;self) -&gt; PhysAddr;
+    /// Returns the flags of this entry.
+    fn flags(&amp;self) -&gt; MappingFlags;
+
+    /// Set mapped physical address of the entry.
+    fn set_paddr(&amp;mut self, paddr: PhysAddr);
+    /// Set flags of the entry.
+    fn set_flags(&amp;mut self, flags: MappingFlags, is_huge: bool);
+
+    /// Returns whether this entry is zero.
+    fn is_unused(&amp;self) -&gt; bool;
+    /// Returns whether this entry flag indicates present.
+    fn is_present(&amp;self) -&gt; bool;
+    /// For non-last level translation, returns whether this entry maps to a
+    /// huge frame.
+    fn is_huge(&amp;self) -&gt; bool;
+    /// Set this entry to zero.
+    fn clear(&amp;mut self);
+}
+<span class="boring">}</span></code></pre></pre>
+<p>基于 GenericPTE trait，分别进行了三种架构的数据结构实现，实现过程遵守标准的架构规范：</p>
+<ul>
+<li>
+<p><strong>X64PTE</strong>：x86_64 页表项，64位，借助 Rust 第三方库 <a href="https://crates.io/crates/x86_64"><code>x86_64</code></a> 解析页表项标志位。</p>
+</li>
+<li>
+<p><strong>A64PTE</strong>：AArch64 页表项，64位，12-48为地址有效位，支持了 AArch64 规范的页描述符相关属性和方法。</p>
+</li>
+<li>
+<p><strong>Rv64PTE</strong>：Risc-V64 页表项，64位。</p>
+</li>
+</ul>
+<h3 id="页表-page-table"><a class="header" href="#页表-page-table">页表 page table</a></h3>
+<p>提供三种架构的页表数据结构实现：</p>
+<ul>
+<li>
+<p><strong>X64PageTable</strong>：x86_64 页表，支持4级页表，最大52位物理地址，48位虚拟地址。</p>
+</li>
+<li>
+<p><strong>A64PageTable</strong>：AArch64 页表，支持4级页表，最大48位物理地址，48位虚拟地址。</p>
+</li>
+<li>
+<p><strong>Sv39PageTable</strong>：Risc-V64 页表，支持3级页表，最大56位物理地址，39位虚拟地址。</p>
+</li>
+<li>
+<p><strong>Sv48PageTable</strong>：Risc-V64 页表，支持4级页表，最大56位物理地址，48位虚拟地址。</p>
+</li>
+</ul>
+<p>提供以下方法：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;M: PagingMetaData, PTE: GenericPTE, IF: PagingIf&gt; PageTable64&lt;M, PTE, IF&gt; {
+    /// Creates a new page table instance or returns the error.
+    ///
+    /// It will allocate a new page for the root page table.
+    pub fn try_new() -&gt; PagingResult&lt;Self&gt; {...}
+
+    /// Returns the physical address of the root page table.
+    pub const fn root_paddr(&amp;self) -&gt; PhysAddr {...}
+
+    /// Maps a virtual page to a physical frame with the given `page_size`
+    /// and mapping `flags`.
+    ///
+    /// The virtual page starts with `vaddr`, amd the physical frame starts with
+    /// `target`. If the addresses is not aligned to the page size, they will be
+    /// aligned down automatically.
+    ///
+    /// Returns [`Err(PagingError::AlreadyMapped)`](PagingError::AlreadyMapped)
+    /// if the mapping is already present.
+    pub fn map(
+        &amp;mut self,
+        vaddr: VirtAddr,
+        target: PhysAddr,
+        page_size: PageSize,
+        flags: MappingFlags,
+    ) -&gt; PagingResult {...}
+
+    /// Unmaps the mapping starts with `vaddr`.
+    ///
+    /// Returns [`Err(PagingError::NotMapped)`](PagingError::NotMapped) if the
+    /// mapping is not present.
+    pub fn unmap(&amp;mut self, vaddr: VirtAddr) -&gt; PagingResult&lt;(PhysAddr, PageSize)&gt; {...}
+
+    /// Query the result of the mapping starts with `vaddr`.
+    ///
+    /// Returns the physical address of the target frame, mapping flags, and
+    /// the page size.
+    ///
+    /// Returns [`Err(PagingError::NotMapped)`](PagingError::NotMapped) if the
+    /// mapping is not present.
+    pub fn query(&amp;self, vaddr: VirtAddr) -&gt; PagingResult&lt;(PhysAddr, MappingFlags, PageSize)&gt; {...}
+
+    /// Updates the target or flags of the mapping starts with `vaddr`. If the
+    /// corresponding argument is `None`, it will not be updated.
+    ///
+    /// Returns the page size of the mapping.
+    ///
+    /// Returns [`Err(PagingError::NotMapped)`](PagingError::NotMapped) if the
+    /// mapping is not present.
+    pub fn update(
+        &amp;mut self,
+        vaddr: VirtAddr,
+        paddr: Option&lt;PhysAddr&gt;,
+        flags: Option&lt;MappingFlags&gt;,
+    ) -&gt; PagingResult&lt;PageSize&gt; {...}
+
+    /// Map a contiguous virtual memory region to a contiguous physical memory
+    /// region with the given mapping `flags`.
+    ///
+    /// The virtual and physical memory regions start with `vaddr` and `paddr`
+    /// respectively. The region size is `size`. The addresses and `size` must
+    /// be aligned to 4K, otherwise it will return [`Err(PagingError::NotAligned)`].
+    ///
+    /// When `allow_huge` is true, it will try to map the region with huge pages
+    /// if possible. Otherwise, it will map the region with 4K pages.
+    ///
+    /// [`Err(PagingError::NotAligned)`]: PagingError::NotAligned
+    pub fn map_region(
+        &amp;mut self,
+        vaddr: VirtAddr,
+        paddr: PhysAddr,
+        size: usize,
+        flags: MappingFlags,
+        allow_huge: bool,
+    ) -&gt; PagingResult {...}
+
+    /// Unmap a contiguous virtual memory region.
+    ///
+    /// The region must be mapped before using [`PageTable64::map_region`], or
+    /// unexpected behaviors may occur.
+    pub fn unmap_region(&amp;mut self, vaddr: VirtAddr, size: usize) -&gt; PagingResult {...}
+
+    /// Walk the page table recursively.
+    ///
+    /// When reaching the leaf page table, call `func` on the current page table
+    /// entry. The max number of enumerations in one table is limited by `limit`.
+    ///
+    /// The arguments of `func` are:
+    /// - Current level (starts with `0`): `usize`
+    /// - The index of the entry in the current-level table: `usize`
+    /// - The virtual address that is mapped to the entry: [`VirtAddr`]
+    /// - The reference of the entry: [`&amp;PTE`](GenericPTE)
+    pub fn walk&lt;F&gt;(&amp;self, limit: usize, func: &amp;F) -&gt; PagingResult
+    where
+        F: Fn(usize, usize, VirtAddr, &amp;PTE),
+    {...}
+}
+<span class="boring">}</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../chap06/crates/fs-IO.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../chap06/crates/percpu.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../chap06/crates/fs-IO.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../chap06/crates/percpu.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../assets/fzf.umd.js"></script>
+        <script src="../../assets/elasticlunr.js"></script>
+
+
+    </div>
+    </body>
+</html>
