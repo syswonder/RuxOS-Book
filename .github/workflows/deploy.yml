@@ -23,6 +23,9 @@ jobs:
         echo `pwd`/mdbook >> $GITHUB_PATH
     - name: Install i18n support
       run: cargo install mdbook-i18n
+    - name: set up cname for custom domain
+      run: |
+        echo "ruxos.syswonder.org" > CNAME
     - name: Deploy GitHub Pages
       run: |
         # This assumes your book is in the root of your repository.
