@@ -1,0 +1,340 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Perl - RuxOS 手册</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="RuxOS 手册">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">RuxOS 手册</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/syswonder/ruxos" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="perl"><a class="header" href="#perl">Perl</a></h1>
+<p>RuxOS 支持在 Qemu 上运行 <a href="https://www.perl.com/">perl</a> 程序。</p>
+<h2 id="实现方式"><a class="header" href="#实现方式">实现方式:</a></h2>
+<p>为了在Rux OS操作系统上实现对perl语言的支持，首先利用了RuxOS已经集成的Musl-libc。Musl-libc是一个轻量级的C标准库，它为perl提供了必要的运行时环境。通过使用Musl-GCC编译器对perl的源代码进行编译，使得perl能够在RuxOS上运行。
+将编译好的perl二进制文件以及它所需的所有动态库一起放入系统的root文件系统（rootfs）中。通过这种方式，perl可以在RuxOS上通过动态链接的方式运行。</p>
+<h2 id="简单测试程序"><a class="header" href="#简单测试程序">简单测试程序:</a></h2>
+<h3 id="第一步"><a class="header" href="#第一步">第一步:</a></h3>
+<p>首先搭建好 <a href="https://github.com/syswonder/ruxos">RuxOS</a> 的环境。</p>
+<h3 id="第二步"><a class="header" href="#第二步">第二步:</a></h3>
+<p>进入RuxOS的根目录，输入以下命令，该命令将拉取 perl 相关的文件到 <code>apps/c/rux-perl</code> 目录下。并运行helloworld程序。</p>
+<pre><code class="language-bash">git clone https://github.com/syswonder/rux-perl.git ./apps/c/rux-perl
+make A=apps/c/rux-perl ARCH=aarch64 V9P=y NET=y MUSL=y SMP=1 run
+</code></pre>
+<p>结果如下，会输出一行hello,perl!</p>
+<pre><code class="language-shell">8888888b.                     .d88888b.   .d8888b.  
+888   Y88b                   d88P" "Y88b d88P  Y88b 
+888    888                   888     888 Y88b.      
+888   d88P 888  888 888  888 888     888  "Y888b.   
+8888888P"  888  888 `Y8bd8P' 888     888     "Y88b. 
+888 T88b   888  888   X88K   888     888       "888 
+888  T88b  Y88b 888 .d8""8b. Y88b. .d88P Y88b  d88P 
+888   T88b  "Y88888 888  888  "Y88888P"   "Y8888P" 
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+smp = 1
+build_mode = release
+log_level = warn
+
+[1716796042.017428 0 axfs_ramfs::dir:55] AlreadyExists sys
+[1716796042.199408 0:2 ruxos_posix_api::imp::fd_ops:182] unsupported fcntl parameters: cmd 1
+[1716796042.215760 0:2 ruxos_posix_api::imp::fd_ops:182] unsupported fcntl parameters: cmd 1
+Hello, perl!
+</code></pre>
+<h2 id="运行用户程序"><a class="header" href="#运行用户程序">运行用户程序:</a></h2>
+<p>rux-perl的结构如下</p>
+<pre><code class="language-bash">rux-perl
+├── axbuild.mk
+├── config_linux.toml
+├── features.txt
+├── main.c
+├── README.md
+├── rootfs
+│   ├── dev
+│   ├── etc
+│   ├── lib                         //perl所需的动态库
+│   │   ├── ld-linux-armhf.so.3
+│   │   └── ld-musl-aarch64.so.1
+│   ├── perl                        //perl可执行文件
+│   ├── proc
+│   ├── sys
+│   ├── tmp
+│   ├── usr                         //perl所需的环境变量
+│   │   └── local
+│   │       └── lib
+│   │           └── perl5
+│   └── your_perl.t                 //默认运行的hello,perl程序
+├── test_perl.sh
+└── test.py
+</code></pre>
+<p>在 <code>axbuild.mk</code>中有一行：</p>
+<pre><code class="language-bash">ARGS = perl,your_perl.t
+</code></pre>
+<p>可以将 <code>your_perl.t</code> 换成想运行的<code>xxx.t</code>程序</p>
+<h2 id="perl的测试相关"><a class="header" href="#perl的测试相关">perl的测试相关</a></h2>
+<p>因为RuxOS 目前并不支持<code>fork()</code> ，所以我用了一些方法来运行官方测试程序
+如果你想运行perl的测试程序，首先将  <code>main.c</code> 中的一些注释给取消，这些是用于io重定向的 :</p>
+<pre><code class="language-C">  // The following section of code is used only during Perl testing:
+
+  // int fd = open("test_result.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
+  // char *data = argv[1];
+  // // wirte test filename
+  // write(fd, "\n", 1);
+  // write(fd, data, strlen(data));
+  // write(fd, "\n", 1);
+  // if (fd == -1) {
+  //     perror("open failed");
+  //     return 1;
+  // }
+  // // io redirect
+  // if (dup2(fd, STDOUT_FILENO) == -1) {
+  //     perror("dup2 failed");
+  //     return 1;
+  // }
+  // chdir("/perl-5.38.2");
+</code></pre>
+<p>然后在RuxOS的根目录下运行:</p>
+<pre><code class="language-bash">sh apps/c/rux-perl/test_perl.sh
+</code></pre>
+<p>最后测试结构会保存在 <code>/rux-perl/test_result.txt</code>中</p>
+<h3 id="测试脚本解释"><a class="header" href="#测试脚本解释">测试脚本解释</a></h3>
+<p><code>test_perl.sh</code>中首先会去下载 perl 的源码，这其中就包括了我们要运行的测试程序
+然后调用<code>test.py</code>来进行测试
+<code>test.py</code>中首先定义了要测试的文件夹，然后遍历文件夹，找到其中以 .t 为结尾的文件</p>
+<pre><code class="language-python">folders = ["./apps/c/rux-perl/rootfs/perl-5.38.2/t/base"
+            ,"./apps/c/rux-perl/rootfs/perl-5.38.2/t/class"
+            ,"./apps/c/rux-perl/rootfs/perl-5.38.2/t/cmd"
+            ,"./apps/c/rux-perl/rootfs/perl-5.38.2/t/io"
+            ,"./apps/c/rux-perl/rootfs/perl-5.38.2/t/japh"
+            ,"./apps/c/rux-perl/rootfs/perl-5.38.2/t/mro"
+            ,"./apps/c/rux-perl/rootfs/perl-5.38.2/t/opbasic"
+            ,"./apps/c/rux-perl/rootfs/perl-5.38.2/t/re"
+            ,"./apps/c/rux-perl/rootfs/perl-5.38.2/t/comp"]
+</code></pre>
+<p>然后对每个单独的 .t 文件都启动一个 RuxOS 来运行。</p>
+<pre><code class="language-python">os.system(f"make A=apps/c/rux-perl ARCH=aarch64 V9P=y NET=y MUSL=y SMP=1 ARGS=perl,{file} run")
+</code></pre>
+<p>部分结果如下,会输出测试的脚本名称，以及测试的结果。</p>
+<pre><code>test result:
+/perl-5.38.2/t/base/if.t
+1..2
+ok 1 - if eq
+ok 2 - if ne
+
+/perl-5.38.2/t/base/pat.t
+1..2
+ok 1 - match regex
+ok 2 - match regex
+
+/perl-5.38.2/t/base/while.t
+1..4
+ok 1
+ok 2
+ok 3
+ok 4
+
+...
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../chap02/apps/wamr.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../chap02/ELF-loader.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../chap02/apps/wamr.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../chap02/ELF-loader.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../assets/fzf.umd.js"></script>
+        <script src="../../assets/elasticlunr.js"></script>
+
+
+    </div>
+    </body>
+</html>

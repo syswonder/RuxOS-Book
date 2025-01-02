@@ -1,0 +1,408 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>各类驱动 - RuxOS 手册</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="RuxOS 手册">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">RuxOS 手册</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/syswonder/ruxos" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="各类驱动"><a class="header" href="#各类驱动">各类驱动</a></h1>
+<p>RuxOS 目前运行在虚拟机环境中，因此主要通过 VirtIO 来支持相关的设备驱动，实现了对应的前端接口。</p>
+<h3 id="driver_common"><a class="header" href="#driver_common">driver_common</a></h3>
+<p>定义了设备驱动的基本 trait、类型、错误类型：</p>
+<p>基本特征，要求所有的设备驱动都必须实现：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Common operations that require all device drivers to implement.
+#[const_trait]
+pub trait BaseDriverOps: Send + Sync {
+    /// The name of the device.
+    fn device_name(&amp;self) -&gt; &amp;str;
+
+    /// The type of the device.
+    fn device_type(&amp;self) -&gt; DeviceType;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>支持的设备类型：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// All supported device types.
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub enum DeviceType {
+    /// Block storage device (e.g., disk).
+    Block,
+    /// Character device (e.g., serial port).
+    Char,
+    /// Network device (e.g., ethernet card).
+    Net,
+    /// Graphic display device (e.g., GPU)
+    Display,
+    /// Plan-9 device (e.g. 9pfs)
+    _9P,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>设备错误类型：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// The error type for device operation failures.
+#[derive(Debug)]
+pub enum DevError {
+    /// An entity already exists.
+    AlreadyExists,
+    /// Try again, for non-blocking APIs.
+    Again,
+    /// Bad internal state.
+    BadState,
+    /// Invalid parameter/argument.
+    InvalidParam,
+    /// Input/output error.
+    Io,
+    /// Not enough space/cannot allocate memory (DMA).
+    NoMemory,
+    /// Device or resource is busy.
+    ResourceBusy,
+    /// This operation is unsupported or unimplemented.
+    Unsupported,
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="driver_block"><a class="header" href="#driver_block">driver_block</a></h3>
+<p>提供了树莓派4B的SD卡bcm2835_sdhci驱动以及基于内存的磁盘驱动。</p>
+<p>定义了块设备的基本操作 trait：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Operations that require a block storage device driver to implement.
+pub trait BlockDriverOps: BaseDriverOps {
+    /// The number of blocks in this storage device.
+    ///
+    /// The total size of the device is `num_blocks() * block_size()`.
+    fn num_blocks(&amp;self) -&gt; u64;
+    /// The size of each block in bytes.
+    fn block_size(&amp;self) -&gt; usize;
+
+    /// Reads blocked data from the given block.
+    ///
+    /// The size of the buffer may exceed the block size, in which case multiple
+    /// contiguous blocks will be read.
+    fn read_block(&amp;mut self, block_id: u64, buf: &amp;mut [u8]) -&gt; DevResult;
+
+    /// Writes blocked data to the given block.
+    ///
+    /// The size of the buffer may exceed the block size, in which case multiple
+    /// contiguous blocks will be written.
+    fn write_block(&amp;mut self, block_id: u64, buf: &amp;[u8]) -&gt; DevResult;
+
+    /// Flushes the device to write all pending data to the storage.
+    fn flush(&amp;mut self) -&gt; DevResult;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>定义了两个数据结构：</p>
+<ul>
+<li>
+<p>SDHCIDriver：树莓派4B的SD卡驱动，实现了上面的块设备基本 trait 以及设备驱动基本 <a href="#driver_common">trait</a>，借助了第三方库<a href="https://github.com/syswonder/bcm2835-sdhci.git">bcm2835-sdhci</a>。</p>
+</li>
+<li>
+<p>RamDisk：基于内存的磁盘类型，以 Rust 的 Vector 类型来保存具体的数据到内存中，实现了上述两种 trait。</p>
+</li>
+</ul>
+<h3 id="driver_net"><a class="header" href="#driver_net">driver_net</a></h3>
+<p>实现了 ixbge 网卡驱动，定义了网卡驱动的基本 trait：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait NetDriverOps: BaseDriverOps {
+    /// The ethernet address of the NIC.
+    fn mac_address(&amp;self) -&gt; EthernetAddress;
+
+    /// Whether can transmit packets.
+    fn can_transmit(&amp;self) -&gt; bool;
+
+    /// Whether can receive packets.
+    fn can_receive(&amp;self) -&gt; bool;
+
+    /// Size of the receive queue.
+    fn rx_queue_size(&amp;self) -&gt; usize;
+
+    /// Size of the transmit queue.
+    fn tx_queue_size(&amp;self) -&gt; usize;
+
+    /// Gives back the `rx_buf` to the receive queue for later receiving.
+    ///
+    /// `rx_buf` should be the same as the one returned by
+    /// [`NetDriverOps::receive`].
+    fn recycle_rx_buffer(&amp;mut self, rx_buf: NetBufPtr) -&gt; DevResult;
+
+    /// Poll the transmit queue and gives back the buffers for previous transmiting.
+    /// returns [`DevResult`].
+    fn recycle_tx_buffers(&amp;mut self) -&gt; DevResult;
+
+    /// Transmits a packet in the buffer to the network, without blocking,
+    /// returns [`DevResult`].
+    fn transmit(&amp;mut self, tx_buf: NetBufPtr) -&gt; DevResult;
+
+    /// Receives a packet from the network and store it in the [`NetBuf`],
+    /// returns the buffer.
+    ///
+    /// Before receiving, the driver should have already populated some buffers
+    /// in the receive queue by [`NetDriverOps::recycle_rx_buffer`].
+    ///
+    /// If currently no incomming packets, returns an error with type
+    /// [`DevError::Again`].
+    fn receive(&amp;mut self) -&gt; DevResult&lt;NetBufPtr&gt;;
+
+    /// Allocate a memory buffer of a specified size for network transmission,
+    /// returns [`DevResult`]
+    fn alloc_tx_buffer(&amp;mut self, size: usize) -&gt; DevResult&lt;NetBufPtr&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="driver_display"><a class="header" href="#driver_display">driver_display</a></h3>
+<p>定义了图像设备驱动的基本 trait：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Operations that require a graphics device driver to implement.
+pub trait DisplayDriverOps: BaseDriverOps {
+    /// Get the display information.
+    fn info(&amp;self) -&gt; DisplayInfo;
+
+    /// Get the framebuffer.
+    fn fb(&amp;self) -&gt; FrameBuffer;
+
+    /// Whether need to flush the framebuffer to the screen.
+    fn need_flush(&amp;self) -&gt; bool;
+
+    /// Flush framebuffer to the screen.
+    fn flush(&amp;mut self) -&gt; DevResult;
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="driver_pci"><a class="header" href="#driver_pci">driver_pci</a></h3>
+<p>定义了 PCI 总线相关的数据结构和操作函数。</p>
+<h3 id="driver_9p"><a class="header" href="#driver_9p">driver_9p</a></h3>
+<p>定义了 9P 设备的基本操作 trait：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Operations that require a 9p driver to implement.
+pub trait _9pDriverOps: BaseDriverOps {
+    /// initialize self(e.g. setup TCP connection)
+    fn init(&amp;self) -&gt; Result&lt;(), u8&gt;;
+
+    /// send bytes of inputs as request and receive  get answer in outputs
+    fn send_with_recv(&amp;mut self, inputs: &amp;[u8], outputs: &amp;mut [u8]) -&gt; Result&lt;u32, u8&gt;; // Ok(length)/Err()
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="driver_virtio"><a class="header" href="#driver_virtio">driver_virtio</a></h3>
+<p>基于上述组件中定义的各种设备类型的基本 trait，结合 Rust 第三方库 <a href="https://github.com/syswonder/virtio-drivers.git"><code>virtio-drivers</code></a>，在 driver_virtio 这一底层组件中实现了具体的 VirtIO 设备接口。提供如下设备：</p>
+<ul>
+<li>
+<p>VirtIoBlkDev：块设备，封装了<code>virtio_drivers::device::blk::VirtIOBlk</code>。</p>
+</li>
+<li>
+<p>VirtIoNetDev：网卡设备，封装了<code>virtio_drivers::device::net::VirtIONetRaw</code>。</p>
+</li>
+<li>
+<p>VirtIoGpuDev：GPU 设备，封装了<code>virtio_drivers::device::gpu::VirtIOGpu</code>。</p>
+</li>
+<li>
+<p>VirtIo9pDev：9p 设备，封装了<code>virtio_drivers::{device::v9p::VirtIO9p</code>。</p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../chap06/crates/crates.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../chap06/crates/kernel-tools.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../chap06/crates/crates.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../chap06/crates/kernel-tools.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../assets/fzf.umd.js"></script>
+        <script src="../../assets/elasticlunr.js"></script>
+
+
+    </div>
+    </body>
+</html>

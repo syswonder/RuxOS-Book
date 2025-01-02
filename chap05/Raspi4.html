@@ -1,0 +1,401 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Raspi4 - RuxOS 手册</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="RuxOS 手册">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">RuxOS 手册</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/syswonder/ruxos" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="raspi4"><a class="header" href="#raspi4">Raspi4</a></h1>
+<p>移植Ruxos到树莓派上与移植Arceos到树莓派上的流大体上一致，只是有些细节不同。本文还包括了一些可能出现的问题以及解决方案。（可参考文章<a href="https://report.syswonder.org/#/2023/20230601_Raspi4-debug-with-jtag">https://report.syswonder.org/#/2023/20230601_Raspi4-debug-with-jtag</a>）</p>
+<p>所需要的硬件：</p>
+<ul>
+<li>
+<p>树莓派以及SD卡</p>
+</li>
+<li>
+<p>usb转串口模块</p>
+</li>
+<li>
+<p>JTAG调试器（debug需要用到，只是运行则不需要），调试部分可参考上面提到的文章。</p>
+</li>
+</ul>
+<h4 id="步骤一烧录好sd卡"><a class="header" href="#步骤一烧录好sd卡">步骤一：烧录好SD卡</a></h4>
+<p>给 sd 卡分一个 FAT32 的 boot 区，然后放入启动所需要的文件:</p>
+<ul>
+<li>
+<p>下载以下三个文件：<code>bcm2711-rpi-4-b.dtb</code>，<code>start4.elf</code>，<code>fixup4.dat</code>。下载地址：<a href="https://github.com/raspberrypi/firmware/tree/master/boot">https://github.com/raspberrypi/firmware/tree/master/boot</a></p>
+</li>
+<li>
+<p>基本启动镜像<code>kernel8.img</code>。首先clone <code>rust-raspberrypi-OS-tutorials</code>（ <a href="https://github.com/rust-embedded/rust-raspberrypi-OS-tutorials">https://github.com/rust-embedded/rust-raspberrypi-OS-tutorials</a>）到本地，然后进入<code>06_uart_chainloader</code>文件夹，运行<code>make BSP=rpi4</code> 即可在文件夹内生成一个<code>kernel8.img</code>。</p>
+</li>
+<li>
+<p>配置文件<code>config.txt</code>,该配置文件是用于正确设置启动选项，内容为：</p>
+</li>
+</ul>
+<pre><code class="language-bash">arm_64bit=1
+init_uart_clock=48000000
+enable_jtag_gpio=1
+device_tree_address=0x03000000
+
+</code></pre>
+<h4 id="步骤二串口模块连接上树莓派并运行"><a class="header" href="#步骤二串口模块连接上树莓派并运行">步骤二：串口模块连接上树莓派，并运行</a></h4>
+<ul>
+<li>
+<p>按照以下图片接线:
+<img src="img/serial-connect.jpg" alt="serial-connect" /></p>
+</li>
+<li>
+<p>进入Ruxos目录，运行命令：<code>make ARCH=aarch64 PLATFORM=aarch64-raspi4 chainboot</code></p>
+</li>
+<li>
+<p>如果正常则终端会输出：</p>
+</li>
+</ul>
+<pre><code class="language-bash">Minipush 1.0
+
+[MP] ✅ Serial connected
+[MP] 🔌 Please power the target now
+
+</code></pre>
+<ul>
+<li>此时给树莓派上电，结果如下：</li>
+</ul>
+<pre><code class="language-shell"> __  __ _      _ _                 _
+|  \/  (_)_ _ (_) |   ___  __ _ __| |
+| |\/| | | ' \| | |__/ _ \/ _` / _` |
+|_|  |_|_|_||_|_|____\___/\__,_\__,_|
+
+           Raspberry Pi 4            
+
+[ML] Requesting binary
+[MP] ⏩ Pushing 64 KiB =========================================🦀 100% 0 KiB/s Time: 00:00:00
+[ML] Loaded! Executing the payload now
+
+8888888b.                     .d88888b.   .d8888b.  
+888   Y88b                   d88P" "Y88b d88P  Y88b 
+888    888                   888     888 Y88b.      
+888   d88P 888  888 888  888 888     888  "Y888b.   
+8888888P"  888  888 `Y8bd8P' 888     888     "Y88b. 
+888 T88b   888  888   X88K   888     888       "888 
+888  T88b  Y88b 888 .d8""8b. Y88b. .d88P Y88b  d88P 
+888   T88b  "Y88888 888  888  "Y88888P"   "Y8888P" 
+
+arch = aarch64
+platform = aarch64-raspi4
+target = aarch64-unknown-none-softfloat
+smp = 1
+build_mode = release
+log_level = warn
+
+Hello, C app!
+</code></pre>
+<h4 id="步骤三运行ruxos并使用sd卡驱动"><a class="header" href="#步骤三运行ruxos并使用sd卡驱动">步骤三：运行Ruxos并使用SD卡驱动：</a></h4>
+<ul>
+<li>
+<p>进入Ruxos目录下，运行命令：<code>make ARCH=aarch64 PLATFORM=aarch64-raspi4 A=apps/fs/shell FEATURES=driver-bcm2835-sdhci chainboot</code></p>
+</li>
+<li>
+<p>和步骤二类似，再看到开机提示后给树莓派上电，结果如下：</p>
+</li>
+</ul>
+<pre><code class="language-shell">Minipush 1.0
+
+[MP] ✅ Serial connected
+[MP] 🔌 Please power the target now
+
+ __  __ _      _ _                 _
+|  \/  (_)_ _ (_) |   ___  __ _ __| |
+| |\/| | | ' \| | |__/ _ \/ _` / _` |
+|_|  |_|_|_||_|_|____\___/\__,_\__,_|
+
+           Raspberry Pi 4            
+
+[ML] Requesting binary
+[MP] ⏩ Pushing 256 KiB ======================================🦀 100% 128 KiB/s Time: 00:00:02
+[ML] Loaded! Executing the payload now
+
+8888888b.                     .d88888b.   .d8888b.  
+888   Y88b                   d88P" "Y88b d88P  Y88b 
+888    888                   888     888 Y88b.      
+888   d88P 888  888 888  888 888     888  "Y888b.   
+8888888P"  888  888 `Y8bd8P' 888     888     "Y88b. 
+888 T88b   888  888   X88K   888     888       "888 
+888  T88b  Y88b 888 .d8""8b. Y88b. .d88P Y88b  d88P 
+888   T88b  "Y88888 888  888  "Y88888P"   "Y8888P" 
+
+arch = aarch64
+platform = aarch64-raspi4
+target = aarch64-unknown-none-softfloat
+smp = 1
+build_mode = release
+log_level = warn
+
+Available commands:
+  cat
+  cd
+  echo
+  exit
+  help
+  ls
+  mkdir
+  pwd
+  rm
+  uname
+ruxos:/$ ls
+drwxr-xr-x      512 .Trash-1000
+drwxr-xr-x      512 System Volume Information
+-rwxr-xr-x    52593 bcm2711-rpi-4-b.dtb
+-rwxr-xr-x       86 config.txt
+drwxr-xr-x     4096 dev
+drwxr-xr-x     4096 etc
+-rwxr-xr-x     5397 fixup4.dat
+drwxr-xr-x      512 hello
+-rwxr-xr-x     8688 kernel8.img
+drwxr-xr-x     4096 proc
+-rwxr-xr-x  2251488 start4.elf
+drwxr-xr-x     4096 sys
+drwxr-xr-x     4096 tmp
+ruxos:/$ 
+</code></pre>
+<h4 id="可能出现的问题"><a class="header" href="#可能出现的问题">可能出现的问题：</a></h4>
+<h5 id="串口设备异常"><a class="header" href="#串口设备异常">串口设备异常：</a></h5>
+<p>串口设备设置不正确时会一直卡在：</p>
+<pre><code class="language-bash">Minipush 1.0
+
+[MP] ⏳ Waiting for /dev/ttyUSB0
+</code></pre>
+<ul>
+<li>
+<p>在linux系统里可以通过<code>ls /dev</code>来显示所有外设，可以观察插上usb转ttl模块后，是否有名为ttyUSB0的设备（这是默认usb设备名称，也是后续我们写死在makefile里的名称）。如果没有该设备，可能是驱动没安装上。可以参考该文章来安装驱动 <a href="https://blog.csdn.net/weixin_43790050/article/details/131362540">https://blog.csdn.net/weixin_43790050/article/details/131362540</a></p>
+</li>
+<li>
+<p>如果想要验证串口设备是否正常，可以将TX和RX连接上，然后发送信息。如果串口设备是正常的，则每发送一条信息就会收到一条同样的信息</p>
+</li>
+</ul>
+<h5 id="sd卡驱动的问题"><a class="header" href="#sd卡驱动的问题">SD卡驱动的问题：</a></h5>
+<p>Ruxos现在实现了解析设备树，但是与qemu不同，树莓派不会将dtb文件的指针放在某个寄存器上，于是只能通过相关设置，来固定dtb文件的位置。在<code>config.txt</code>中<code>device_tree_address=0x03000000</code>指定了dtb文件的物理地址。在<code>modules/ruxhal/src/platform/aarch64_raspi/mod.rs</code>中，修改<code>rust_entry</code>函数，即启动时默认从<code>0x03000000</code>地址来初始化设备树。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub(crate) unsafe extern "C" fn rust_entry(cpu_id: usize) {
+    crate::mem::clear_bss();
+    crate::arch::set_exception_vector_base(exception_vector_base as usize);
+    crate::arch::write_page_table_root0(0.into()); // disable low address access
+    //Set the physical address of the dtb file to 0x03000000 in config.txt
+    unsafe {
+        dtb::init(crate::mem::phys_to_virt(0x03000000.into()).as_ptr());
+    }
+    crate::cpu::init_primary(cpu_id);
+    super::aarch64_common::pl011::init_early();
+    super::aarch64_common::generic_timer::init_early();
+    rust_main(cpu_id, 0x03000000);
+}
+<span class="boring">}</span></code></pre></pre>
+<h5 id="docker报错-varrundockersock-权限不够"><a class="header" href="#docker报错-varrundockersock-权限不够">docker报错 var/run/docker.sock 权限不够:</a></h5>
+<p>运行以下两行命令即可</p>
+<pre><code class="language-bash">cd /
+sudo chmod 666 var/run/docker.sock
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../chap05/multiplatforms.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../chap06/design_overview.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../chap05/multiplatforms.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../chap06/design_overview.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../assets/fzf.umd.js"></script>
+        <script src="../assets/elasticlunr.js"></script>
+
+
+    </div>
+    </body>
+</html>
