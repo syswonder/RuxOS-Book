@@ -7,6 +7,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      CUSTOM_DOMAIN: "ruxos.syswonder.org"
     permissions:
       contents: write  # To push a branch 
       pull-requests: write  # To create a PR from that branch
@@ -23,9 +25,6 @@ jobs:
         echo `pwd`/mdbook >> $GITHUB_PATH
     - name: Install i18n support
       run: cargo install mdbook-i18n
-    - name: set up cname for custom domain
-      run: |
-        echo "ruxos.syswonder.org" > CNAME
     - name: Deploy GitHub Pages
       run: |
         # This assumes your book is in the root of your repository.
@@ -35,6 +34,8 @@ jobs:
         git config user.name "Deploy from CI"
         git config user.email ""
         cd gh-pages
+        # set up cname for custom domain
+        echo "$CUSTOM_DOMAIN" > CNAME
         # Delete the ref to avoid keeping history.
         git update-ref -d refs/heads/gh-pages
         rm -rf *
