@@ -34,11 +34,11 @@ jobs:
         git config user.name "Deploy from CI"
         git config user.email ""
         cd gh-pages
-        # set up cname for custom domain
-        echo "$CUSTOM_DOMAIN" > CNAME
         # Delete the ref to avoid keeping history.
         git update-ref -d refs/heads/gh-pages
         rm -rf *
+        # set up cname for custom domain
+        echo "$CUSTOM_DOMAIN" > CNAME
         mv ../book/html/* .
         git add .
         git commit -m "Deploy $GITHUB_SHA to gh-pages"
